@@ -1,0 +1,142 @@
+.viewBillSection-container {
+    /* border: 2px solid red; */
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.viewBillSection-header {
+    padding: 0 10px 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* box-shadow: 0px 10px 30px -17px rgb(108, 108, 108); */
+}
+
+.viewBillSection-header>div>.title {
+    font-size: 27px;
+    font-weight: bolder;
+    color: rgb(57, 57, 57);
+}
+
+.viewBillSection-header>div>.date {
+    font-size: 14px;
+    color: rgb(59, 59, 59);
+    font-weight: 500;
+}
+
+.viewBillSection-header>.add-spends {
+    background-color: rgb(0, 144, 72);
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.viewBillSection-header>.add-spends:hover {
+    transform: scale(1.02);
+}
+
+hr {
+    border: 1px solid rgb(116, 116, 116);
+}
+
+.viewBillSection-card-container {
+    margin: 10px 0 0 0;
+    height: 93%;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.viewBillSection-card-container-addSpend {
+    position: fixed;
+    height: 90%;
+    width: 75%;
+    background: rgba(195, 195, 195, 0.883);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewBillSection-card-container-addSpend-box {
+    width: 400px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 5px 5px 20px -10px black;
+    border-radius: 5px;
+}
+
+.viewBillSection-card-container-addSpend-box>.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px;
+}
+
+.viewBillSection-card-container-addSpend-box>.header>.title {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.viewBillSection-card-container-addSpend-box>.body>div>label {
+    color: black;
+    font-size: 16px;
+}
+
+.viewBillSection-card-container-addSpend-box>.body>div>select {
+    border: 1px solid rgb(85, 85, 85);
+}
+
+.viewBillSection-card-container-addSpend-box>.body>.amount {
+    padding-top: 20px;
+}
+
+.viewBillSection-card {
+    background-color: white;
+    width: 350px;
+    height: max-content;
+    margin: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 20px -10px black;
+    transition: all 0.2s ease-in-out;
+}
+
+.viewBillSection-card:hover {
+    transform: scale(1.02);
+}
+
+.viewBillSection-card>.card-title {
+    font-size: 19px;
+    font-weight: bold;
+    color: rgb(0, 144, 72);
+}
+
+.viewBillSection-card>.total-spent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.viewBillSection-card>.due {
+    font-weight: 700;
+    margin-bottom: 3px;
+    color: rgb(76, 76, 76);
+}
+
+.viewBillSection-card>.due-track {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5px 0;
+    border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+.viewBillSection-card>.due-track:last-child {
+    border-bottom: 0px;
+}

@@ -1,0 +1,86 @@
+import React, { useState } from "react";
+import Link from "next/link";
+import MenuIcon from "@mui/icons-material/Menu";
+
+function Sidebar() {
+  const [isTrue, setIsTrue] = useState(false);
+  const [bills, setBills] = useState([]);
+
+  return (
+    <>
+      <div className="p-[15px] w-[25%] h-[100vh] flex flex-col justify-between bg-white">
+        <div>
+          <div className="p-[5px] my-[10px] text-[25px] bg-green-700 font-bold text-white text-center cursor-default">Split - your - bills</div>
+
+          <div>
+            <Link href="/addNewBill">
+            <div className="w-[100%] h-[50px] text-black p-[5px] mt-[50px] mb-[20px] text-[20px] font-bold cursor-pointer flex align-center justify-center rounded-md border-[1px] duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">+ Add New</div>
+            </Link>
+
+            <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[20px] text-green-600 font-bold flex align-center justify-between cursor-pointer">
+              <div className="">Jammu & Kashmir</div>
+              {/* <div className="hover:text-[rgb(255,255,216)]">Jammu & Kashmir</div> */}
+              {/* <div className="text-[rgb(185,185,185)]">{new Date().toLocaleDateString()}</div> */}
+            </div>
+
+            <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[16px] text-gray-700 flex align-center justify-between cursor-pointer hover:text-black">
+              <div className="">Jammu & Kashmir</div>
+              {/* <div className="">{new Date().toLocaleDateString()}</div> */}
+            </div>
+            <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[16px] text-gray-700 flex align-center justify-between cursor-pointer hover:text-black">
+              <div className="">Jammu & Kashmir</div>
+              {/* <div className="">{new Date().toLocaleDateString()}</div> */}
+            </div>
+          </div>
+        </div>
+
+        <Link href="/login">
+          <div className="flex align-center cursor-pointer" title="Log out">
+            {/* <img src="" alt="" /> */}
+            <div className="text-[16px] font-bold text-black mx-[10px]">Vikash</div>
+          </div>
+        </Link>
+      </div>
+
+      <div className="lg:hidden absolute z-10 p-[5px]">
+        <MenuIcon
+          style={{ fontSize: "26px", cursor: "pointer" }}
+          onClick={() => setIsTrue(!isTrue)}
+        />
+        {isTrue && (
+          <div className="bg-[rgb(41,41,41)] p-[20px] w-[300px] min-h-[500px] text-white flex flex-col justify-between">
+            <div>
+              <div className="p-[5px] my-[10px] text-[12px] bg-[rgb(195,195,195)] text-center cursor-default">Split - your - bills</div>
+
+              <div>
+                <div
+                  className="w-[100%] h-[25px] text-white p-[5px] mt-[10px] mb-[20px] text-[10px] font-bold cursor-pointer flex align-center justify-center rounded-md border-[1px] duration-200 hover:text-[22px] hover:text-[rgb(0,144,72)]"
+                  onClick={() => {
+                    setIsTrue(!isTrue);
+                  }}
+                >
+                  + New
+                </div>
+
+                <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[10px] text-white flex align-center justify-between cursor-pointer">
+                  <div className="text-[rgb(0,144,72)] font-bold hover:text-[rgb(255,255,216)]">Jammu & Kashmir</div>
+                  {/* <div className="hover:text-[rgb(255,255,216)]">{bill.title}</div> */}
+                  {/* <div className="text-[7px] text-[rgb(185,185,185)]">{new Date().toLocaleDateString()}</div> */}
+                </div>
+              </div>
+            </div>
+
+            <Link href="/login">
+              <div className="flex align-center cursor-pointer" title="Log out">
+                {/* <img src={user?.profilePic} alt="" /> */}
+                <div className="text-[10px] font-bold text-white mx-[10px]">Vikash</div>
+              </div>
+            </Link>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default Sidebar;
