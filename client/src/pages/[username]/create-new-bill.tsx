@@ -8,6 +8,28 @@ function AddNewBill() {
   const BASE_URL = "http://localhost:5000";
 
   const router = useRouter();
+  const { username } = router.query;
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        const data = await res.json();
+      } catch (error) {
+        console.log(error);
+        router.push("/login");
+      }
+    };
+
+    getData();
+  }, [router]);
 
   const [title, setTitle] = useState("");
   const [noOfInputs, setNoOfInputs] = useState([
@@ -37,26 +59,39 @@ function AddNewBill() {
     setNoOfInputs(onChangedValue);
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+  const handleOnCreate = async (e: any) => {
+    e.preventDefault();
+    if (title === "") return window.alert("Enter the Title");
+    noOfInputs.map((item, index) => {
+      if (item.memberName === "")
+        return window.alert(`Member ${index + 1} is empty`);
+    });
 
-        const data = await res.json();
-      } catch (error) {
-        console.log(error);
-        router.push('/login');
+    const memberNames = noOfInputs.map((input) => input.memberName);
+
+    try {
+      const res = await fetch(`${BASE_URL}/createBill`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          title,
+          memberNames,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.status !== 200 || !data) {
+        return window.alert(`${data.error}`);
+      } else {
+        router.push(`/${username}`);
       }
-    };
-
-    getData();
-  }, [router]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex h-[100vh] bg-green-600">
@@ -126,7 +161,10 @@ function AddNewBill() {
               </div>
             ))}
 
-            <button className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105">
+            <button
+              className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
+              onClick={handleOnCreate}
+            >
               Create
             </button>
           </form>
