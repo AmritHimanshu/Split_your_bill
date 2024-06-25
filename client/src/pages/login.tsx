@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -11,6 +11,24 @@ function Login() {
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(()=>{
+    const logOut = async ()=>{
+      try {
+        const res = await fetch(`${BASE_URL}/logout`,{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          credentials:'include'
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    logOut();
+  },[])
 
   const loginUser = async (e: any) => {
     e.preventDefault();

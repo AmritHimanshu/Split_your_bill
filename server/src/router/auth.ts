@@ -4,27 +4,9 @@ const bcrypt = require("bcryptjs");
 import cookieParser from "cookie-parser";
 router.use(cookieParser());
 const authenticate = require("../middleware/authenticate");
-import { Document } from "mongoose";
 
 const User = require("../model/userSchema");
 
-interface UserDocument extends Document {
-  name: string;
-  email: string;
-  phone: string;
-  profilePic: string;
-  password: string;
-  date: Date;
-  tokens: { token: string }[];
-
-  generateAuthToken: () => Promise<string>;
-}
-
-interface AuthenticatedRequest extends Request {
-  token?: string;
-  rootUser?: Document;
-  userID?: string;
-}
 
 router.post("/register", async (req, res) => {
   const { name, email, phone, password, cpassword } = req.body;
@@ -90,6 +72,11 @@ router.post("/login", async (req, res) => {
 router.get('/user', authenticate, (req:any, res) => {
   res.status(200).send(req.rootUser);
 });
+
+router.get('/logout', (req, res) => {
+  res.clearCookie('jwtoken', { path: '/' });
+  res.status(200).json({ message: 'User Logout' });
+})
 
 router.get("/", (req, res) => {
   res.json({ message: "Hello, TypeScript Node Express!" });

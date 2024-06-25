@@ -18,11 +18,12 @@ export default function Home() {
         });
 
         const data = await res.json();
-        if (data) {  
+        if (data) {
           console.log(data);
-        } else console.log("error");
+        }
       } catch (error) {
         console.log(error);
+        router.push('/login')
       }
     };
 

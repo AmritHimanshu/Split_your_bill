@@ -1,10 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
 
 function Sidebar() {
+  const BASE_URL = "http://localhost:5000";
+
   const [isTrue, setIsTrue] = useState(false);
+  const [user,setUser] = useState<any>({});
   const [bills, setBills] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        const data = await res.json();
+        if (data) {
+          setUser(data)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getData();
+  }, []);
 
   return (
     <>
@@ -73,7 +99,7 @@ function Sidebar() {
             <Link href="/login">
               <div className="flex align-center cursor-pointer" title="Log out">
                 {/* <img src={user?.profilePic} alt="" /> */}
-                <div className="text-[10px] font-bold text-white mx-[10px]">Vikash</div>
+                <div className="text-[10px] font-bold text-white mx-[10px]">{user.name}</div>
               </div>
             </Link>
           </div>
