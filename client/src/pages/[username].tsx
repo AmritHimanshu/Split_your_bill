@@ -19,7 +19,6 @@ export default function Home() {
 
         const data = await res.json();
         if (data) {
-          router.push(`/${[data.name]}`)
           console.log(data);
         }
       } catch (error) {

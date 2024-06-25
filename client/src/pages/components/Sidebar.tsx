@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
 
 function Sidebar() {
   const BASE_URL = "http://localhost:5000";
+  
+  const router = useRouter();
+  const {username} = router.query;
 
   const [isTrue, setIsTrue] = useState(false);
   const [user,setUser] = useState<any>({});
@@ -39,7 +43,7 @@ function Sidebar() {
           <div className="p-[5px] my-[10px] text-[25px] bg-green-700 font-bold text-white text-center cursor-default">Split - your - bills</div>
 
           <div>
-            <Link href="/addNewBill">
+            <Link href={`/${username}/create-new-bill`}>
             <div className="w-[100%] h-[50px] text-black p-[5px] mt-[50px] mb-[20px] text-[20px] font-bold cursor-pointer flex align-center justify-center rounded-md border-[1px] duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">+ Add New</div>
             </Link>
 
