@@ -1,15 +1,46 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function Login() {
+  const BASE_URL = "http://localhost:5000";
+  const router = useRouter();
 
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const 
+  const loginUser = async (e: any) => {
+    e.preventDefault();
+    if (!email || !password) {
+      return window.alert("Fill all the fields");
+    }
+    try {
+      const res = await fetch(`${BASE_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.status !== 200) {
+        return window.alert(`${data.error}`);
+      } else {
+        window.alert("Successfully registered");
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-[100vw] h-[100vh] flex align-center justify-center bg-green-600">
@@ -18,7 +49,7 @@ function Login() {
           Login
         </div>
         <div>
-          <form>
+          <form onSubmit={loginUser}>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
               <label htmlFor="email" className="text-[18px] text-black">
                 Email
@@ -70,9 +101,11 @@ function Login() {
 
           <div className="text-center mt-[10px] mb-[5px]">
             <span className="mx-[5px]">Don&rsquo;t have an account?</span>
-            <Link href="/register"><span className="mx-[5px] text-green-600 underline">
-              Register here
-            </span></Link>
+            <Link href="/register">
+              <span className="mx-[5px] text-green-600 underline">
+                Register here
+              </span>
+            </Link>
           </div>
         </div>
       </div>

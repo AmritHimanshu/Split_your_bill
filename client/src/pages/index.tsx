@@ -1,25 +1,33 @@
+import { useRouter } from "next/router";
 import Sidebar from "./components/Sidebar";
+import { useEffect } from "react";
 
 export default function Home() {
-  const getData = async () => {
-    try {
-      const res = await fetch('http://localhost:5000', {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  const BASE_URL = "http://localhost:5000";
+  const router = useRouter();
 
-      const data = await res.json();
-      if(data) {
-        window.alert(data.message);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        const data = await res.json();
+        if (data) {  
+          console.log(data);
+        } else console.log("error");
+      } catch (error) {
+        console.log(error);
       }
-      else console.log("error")
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  // getData();
+    };
+
+    getData();
+  }, []);
 
   return (
     <div className="flex h-[100vh] bg-green-600">

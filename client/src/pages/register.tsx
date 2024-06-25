@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function Register() {
+  const BASE_URL = "http://localhost:5000";
+  const router = useRouter();
+
   const [visible, setVisible] = useState(false);
   const [cvisible, setCVisible] = useState(false);
 
@@ -20,6 +24,50 @@ function Register() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  const registerUser = async (e: any) => {
+    e.preventDefault();
+
+    const regex = /^[0-9]+$/;
+    const { name, email, phone, password, cpassword } = inputData;
+    if (!name || !email || !phone || !password || !cpassword) {
+      return window.alert("Fill all the fields");
+    } else if (password !== cpassword) {
+      return window.alert("Password doesn't match");
+    } else if (password.length < 6) {
+      return window.alert("Length of password must be of atleast 6");
+    } else if (phone.length < 10) {
+      return window.alert("Invalid Phone number");
+    } else if (!regex.test(phone)) {
+      return window.alert("Invalid Phone number");
+    }
+
+    try {
+      const res = await fetch(`${BASE_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+          cpassword,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.status !== 200) {
+        return window.alert(`${data.error}`);
+      } else {
+        window.alert(`${data.message}`);
+        router.push("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-[100vw] h-[100vh] flex align-center justify-center bg-green-600">
       <div className="w-[500px] p-[20px] bg-white m-auto rounded-md shadow-lg">
@@ -27,7 +75,7 @@ function Register() {
           Register
         </div>
         <div>
-          <form>
+          <form onSubmit={registerUser}>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
               <label htmlFor="name" className="text-[18px] text-black">
                 Name

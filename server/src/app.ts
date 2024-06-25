@@ -12,7 +12,7 @@ require('./db/conn');
 app.use(
   cors({
     origin: true,
-    Credential: true,
+    credentials: true,
   })
 );
 
