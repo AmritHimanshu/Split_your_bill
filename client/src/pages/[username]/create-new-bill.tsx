@@ -90,6 +90,7 @@ function AddNewBill() {
       }
     } catch (error) {
       console.log(error);
+      window.alert("Internal server error");
     }
   };
 
