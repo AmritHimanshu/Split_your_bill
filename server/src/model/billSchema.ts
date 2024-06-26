@@ -12,15 +12,13 @@ const billSchema = new mongoose.Schema({
   },
   members: [
     {
-      member: {
-        name: {
-          type: String,
-          required: true,
-        },
-        totalSpends: {
-          type: String,
-          default: "0",
-        },
+      name: {
+        type: String,
+        required: true,
+      },
+      totalSpends: {
+        type: String,
+        default: "0",
       },
     },
   ],
@@ -30,7 +28,6 @@ const billSchema = new mongoose.Schema({
   },
 });
 
-
-const Bill = mongoose.model('BILL', billSchema);
+const Bill = mongoose.model("BILL", billSchema);
 
 module.exports = Bill;

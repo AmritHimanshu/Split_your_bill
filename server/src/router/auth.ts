@@ -6,6 +6,7 @@ router.use(cookieParser());
 const authenticate = require("../middleware/authenticate");
 
 const User = require("../model/userSchema");
+const Bill = require("../model/billSchema");
 
 router.post("/register", async (req, res) => {
   const { name, email, phone, password, cpassword } = req.body;
@@ -68,14 +69,29 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/create-new-bill", authenticate, (req, res) => {
+router.post("/create-new-bill", authenticate, async (req: any, res) => {
   const { title, memberNames } = req.body;
-  console.log(title, memberNames);
   if (!title) return res.status(206).json({ error: "Fill all the fields" });
   memberNames.map((item: string, index: number) => {
     if (item === "")
       return res.status(206).json({ error: `Member ${index + 1} is empty` });
   });
+
+  try {
+    const newBill = new Bill({
+      title: title,
+      members: memberNames.map((memberName: string) => ({
+        name: memberName,
+      })),
+      createdBy: req.userID,
+    });
+
+    const savedBill = await newBill.save();
+    res.status(200).json({ message: "Bill created" });
+  } catch (error) {
+    console.log("/created-new-bill " + error);
+    res.status(503).json({ error: "Internal Server Error" });
+  }
 });
 
 router.get("/user", authenticate, (req: any, res) => {

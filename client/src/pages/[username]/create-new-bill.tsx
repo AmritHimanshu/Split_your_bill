@@ -89,7 +89,7 @@ function AddNewBill() {
         router.push("/login");
       }
       const data = await res.json();
-      if (res.status === 206) return window.alert(`${data.error}`);
+      if (res.status === 206 || res.status === 503) return window.alert(`${data.error}`);
       if (res.status === 200) {
         window.alert(`${data.message}`);
         router.push(`/${username}`);
