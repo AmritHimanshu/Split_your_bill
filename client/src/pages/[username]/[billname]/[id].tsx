@@ -155,13 +155,13 @@ function BillPage() {
                   className="bg-white text-green-700 h-max md:font-bold p-[3px] md:p-[4px] rounded-sm md:rounded-md cursor-pointer"
                   onClick={() => setIsAddTrue(!isAddTrue)}
                 >
-                  + Add
+                  + Money
                 </div>
                 <div
                   className="bg-white text-green-700 h-max md:font-bold p-[3px] md:p-[4px] rounded-sm md:rounded-md cursor-pointer"
                   onClick={() => setIsSubTrue(!isSubTrue)}
                 >
-                  - Subs
+                  - Money
                 </div>
               </div>
             )}
