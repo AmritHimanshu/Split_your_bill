@@ -12,7 +12,7 @@ function BillPage() {
   const [isTrue, setIsTrue] = useState(false);
   const [selectedMember, setSelectedMember] = useState("");
   const [inputAmount, setInputAmount] = useState("");
-  const [selectedBill,setSelectedBill] = useState<any>();
+  const [selectedBill, setSelectedBill] = useState<any>();
 
   useEffect(() => {
     const getData = async () => {
@@ -64,7 +64,14 @@ function BillPage() {
               <div className="text-[27px] font-bold text-white">
                 {selectedBill?.title}
               </div>
-              <div className="text-[14px] text-white">25/06/2024</div>
+              <div className="text-[14px] text-white">
+                {selectedBill &&
+                  new Date(selectedBill?.date).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+              </div>
             </div>
 
             {!isTrue && (
