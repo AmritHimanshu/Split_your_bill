@@ -83,22 +83,27 @@ function Sidebar() {
               >
                 <MoreVertIcon
                   className="hover:bg-gray-300/40 rounded-2xl p-1"
-                  style={{ fontSize: "30px", cursor: "pointer" }}
+                  style={{
+                    fontSize: "30px",
+                    cursor: "pointer",
+                    color: "black",
+                  }}
                 />
                 <Link
                   href={`/${username}/${bill.title}/${bill._id}`}
-                  key={index}
                   className="w-full ml-5 my-[10px]"
                 >
                   <div
-                    className={`text-center px-[5px] my-[10px] ${
+                    className={`text-center px-[5px] py-[10px] hover:text-green-700 ${
                       bill.title === billname
                         ? "text-green-600 font-bold text-[20px]"
-                        : "text-[14px] text-gray-600"
+                        : "text-[14px] font-bold text-gray-500"
                     } flex items-center justify-between cursor-pointer`}
                   >
                     <div className="">{bill.title}</div>
-                    {bill.title === billname && <ArrowRightIcon />}
+                    {bill.title === billname && (
+                      <ArrowRightIcon style={{ fontSize: "35px" }} />
+                    )}
                   </div>
                 </Link>
               </div>
@@ -116,6 +121,7 @@ function Sidebar() {
         </Link>
       </div>
 
+{/* <---------------------- Phone View Sidebar -----------------------> */}
       <div className="lg:hidden absolute z-10">
         <MenuIcon
           style={{
@@ -146,22 +152,36 @@ function Sidebar() {
                 </Link>
 
                 {bills?.map((bill: any, index) => (
-                  <Link
-                    href={`/${username}/${bill.title}/${bill._id}`}
+                  <div
                     key={index}
+                    className="flex items-center border-b-[1px] border-[rgb(141,141,141)]"
                   >
-                    <div
-                      key={index}
-                      className={`border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[12px] ${
-                        bill.title === billname
-                          ? "text-green-600 font-bold text-[20px]"
-                          : "text-[14px] text-gray-600"
-                      } flex items-center justify-between cursor-pointer`}
+                    <MoreVertIcon
+                      className="hover:bg-gray-300/40 rounded-2xl p-1"
+                      style={{
+                        fontSize: "30px",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                    />
+                    <Link
+                      href={`/${username}/${bill.title}/${bill._id}`}
+                      className="w-full ml-5 my-[5px]"
                     >
-                      <div className="">{bill.title}</div>
-                      {bill.title === billname && <ArrowRightIcon />}
-                    </div>
-                  </Link>
+                      <div
+                        className={`text-center px-[5px] py-[5px] hover:text-green-700 ${
+                          bill.title === billname
+                            ? "text-green-600 font-bold text-[20px]"
+                            : "text-[14px] font-bold text-gray-500"
+                        } flex items-center justify-between cursor-pointer`}
+                      >
+                        <div className="">{bill.title}</div>
+                        {bill.title === billname && (
+                          <ArrowRightIcon style={{ fontSize: "30px" }} />
+                        )}
+                      </div>
+                    </Link>
+                  </div>
                 ))}
               </div>
             </div>
