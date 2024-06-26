@@ -156,8 +156,10 @@ router.put("/subAmount/:id", authenticate, async (req, res) => {
     );
     const inputAmountNumber = parseFloat(inputAmount);
     const newTotalSpends = (parsedTotalSpends - inputAmountNumber).toString();
-    if(parseFloat(newTotalSpends) < 0) {
-      return res.status(404).json({error:"Can't substract this much amount"});
+    if (parseFloat(newTotalSpends) < 0) {
+      return res
+        .status(404)
+        .json({ error: "Can't substract this much amount" });
     }
     const bill = await Bill.findOneAndUpdate(
       { _id: id, "members._id": selectedMember },
@@ -171,6 +173,25 @@ router.put("/subAmount/:id", authenticate, async (req, res) => {
     }
   } catch (error) {
     console.log("/subAmount " + error);
+    res.status(503).json({ error: "Internal Server Error" });
+  }
+});
+
+router.delete("/delete/:id", authenticate, async (req: any, res) => {
+  const { id } = req.params;
+  try {
+    const bill = await Bill.findById(id);
+    if (!bill) {
+      return res.status(404).json({ error: "Bill not found" });
+    }
+    if (req.rootUser._id.equals(bill.createdBy)) {
+      await bill.deleteOne(); // Invoke remove() to delete the post
+      res.status(200).json({ message: "Post deleted successfully" });
+    } else {
+      return res.status(422).json({ error: "You can't delete this post" });
+    }
+  } catch (error) {
+    console.log("/delete " + error);
     res.status(503).json({ error: "Internal Server Error" });
   }
 });
