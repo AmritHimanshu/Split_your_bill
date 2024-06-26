@@ -1,17 +1,18 @@
 import express from "express";
 const app = express();
 const cors = require("cors");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
-dotenv.config({ path: './src/.env' });
+dotenv.config({ path: "./src/.env" });
 
 const port = process.env.PORT;
 
-require('./db/conn');
+require("./db/conn");
 
 app.use(
   cors({
-    origin: true,
+    // origin: true,
+    origin: "https://split-your-bill.vercel.app",
     credentials: true,
   })
 );

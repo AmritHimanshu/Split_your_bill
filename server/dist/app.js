@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const cors = require("cors");
-const dotenv = require('dotenv');
-dotenv.config({ path: './src/.env' });
+const dotenv = require("dotenv");
+dotenv.config({ path: "./src/.env" });
 const port = process.env.PORT;
-require('./db/conn');
+require("./db/conn");
 app.use(cors({
-    origin: true,
+    // origin: true,
+    origin: "https://split-your-bill.vercel.app",
     credentials: true,
 }));
 app.use(express_1.default.json());
