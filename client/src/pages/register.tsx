@@ -87,7 +87,7 @@ function Register() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] flex align-center justify-center bg-green-600">
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-600">
       <div className="w-[500px] p-[20px] bg-white m-auto rounded-md shadow-lg">
         <div className="my-[10px] text-center text-[22px] text-green-600">
           Register
@@ -140,7 +140,7 @@ function Register() {
               <label htmlFor="password" className="text-[18px] text-black">
                 Password
               </label>
-              <div className="flex align-center">
+              <div className="flex items-center">
                 <input
                   type={`${!visible ? "password" : "text"}`}
                   name="password"
@@ -167,7 +167,7 @@ function Register() {
               <label htmlFor="cpassword" className="text-[18px] text-black">
                 Confirm Password
               </label>
-              <div className="flex align-center">
+              <div className="flex items-center">
                 <input
                   type={`${!cvisible ? "password" : "text"}`}
                   name="cpassword"

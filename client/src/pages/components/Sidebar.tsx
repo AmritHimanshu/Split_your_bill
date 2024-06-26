@@ -70,7 +70,7 @@ function Sidebar() {
 
           <div>
             <Link href={`/${username}/create-new-bill`}>
-              <div className="w-[100%] h-[50px] text-black p-[5px] mt-[50px] mb-[20px] text-[20px] font-bold cursor-pointer flex align-center justify-center rounded-md border-[1px] duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">
+              <div className="w-[100%] h-[50px] text-black p-[5px] mt-[50px] mb-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">
                 + Add New
               </div>
             </Link>
@@ -79,7 +79,7 @@ function Sidebar() {
               <Link href={`/${username}/${bill.title}/${bill._id}`} key={index}>
                 <div
                   key={index}
-                  className={`border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] ${bill.title === billname ? "text-green-600 font-bold text-[20px]" : "text-[14px] text-gray-600"} flex align-center justify-between cursor-pointer`}
+                  className={`border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] ${bill.title === billname ? "text-green-600 font-bold text-[20px]" : "text-[14px] text-gray-600"} flex items-center justify-between cursor-pointer`}
                 >
                   <div className="">{bill.title}</div>
                   {bill.title === billname && <ArrowRightIcon />}
@@ -90,7 +90,7 @@ function Sidebar() {
         </div>
 
         <Link href="/login">
-          <div className="flex align-center cursor-pointer" title="Log out">
+          <div className="flex items-center cursor-pointer" title="Log out">
             {/* <img src="" alt="" /> */}
             <div className="text-[16px] font-bold text-black mx-[10px]">
               Vikash
@@ -113,7 +113,7 @@ function Sidebar() {
 
               <div>
                 <div
-                  className="w-[100%] h-[25px] text-white p-[5px] mt-[10px] mb-[20px] text-[10px] font-bold cursor-pointer flex align-center justify-center rounded-md border-[1px] duration-200 hover:text-[22px] hover:text-[rgb(0,144,72)]"
+                  className="w-[100%] h-[25px] text-white p-[5px] mt-[10px] mb-[20px] text-[10px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] duration-200 hover:text-[22px] hover:text-[rgb(0,144,72)]"
                   onClick={() => {
                     setIsTrue(!isTrue);
                   }}
@@ -121,7 +121,7 @@ function Sidebar() {
                   + New
                 </div>
 
-                <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[10px] text-white flex align-center justify-between cursor-pointer">
+                <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[10px] text-white flex items-center justify-between cursor-pointer">
                   <div className="text-[rgb(0,144,72)] font-bold hover:text-[rgb(255,255,216)]">
                     Jammu & Kashmir
                   </div>
@@ -132,7 +132,7 @@ function Sidebar() {
             </div>
 
             <Link href="/login">
-              <div className="flex align-center cursor-pointer" title="Log out">
+              <div className="flex items-center cursor-pointer" title="Log out">
                 {/* <img src={user?.profilePic} alt="" /> */}
                 <div className="text-[10px] font-bold text-white mx-[10px]">
                   {user.name}

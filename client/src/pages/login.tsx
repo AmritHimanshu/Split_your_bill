@@ -61,7 +61,7 @@ function Login() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] flex align-center justify-center bg-green-600">
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-600">
       <div className="w-[500px] p-[20px] bg-white m-auto rounded-md shadow-lg">
         <div className="my-[10px] text-center text-[22px] text-green-600">
           Login
@@ -88,7 +88,7 @@ function Login() {
               <label htmlFor="password" className="text-[18px] text-black">
                 Password
               </label>
-              <div className="flex align-center justify-between">
+              <div className="flex items-center justify-between">
                 <input
                   type={`${!visible ? "password" : "text"}`}
                   name="password"

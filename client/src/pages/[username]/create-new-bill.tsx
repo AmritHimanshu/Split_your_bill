@@ -136,7 +136,7 @@ function AddNewBill() {
                   >
                     Member {index + 1}:
                   </label>
-                  <div className="flex align-center">
+                  <div className="flex items-center">
                     <input
                       className="text-[18px] w-full outline-0 placeholder:text-[15px]"
                       id={`member${index + 1}`}
@@ -158,7 +158,7 @@ function AddNewBill() {
 
                 {index === noOfInputs.length - 1 && (
                   <div
-                    className="my-[20px] flex align-center max-w-max text-[rgb(57,57,57)] font-bold cursor-pointer"
+                    className="my-[20px] flex items-center max-w-max text-[rgb(57,57,57)] font-bold cursor-pointer"
                     onClick={handleAddInput}
                   >
                     <AddCircleOutlineIcon style={{ marginRight: "5px" }} /> Add

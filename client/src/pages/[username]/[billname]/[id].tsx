@@ -61,7 +61,7 @@ function BillPage() {
       <Sidebar />
       <div className="w-[75%] py-[20px] flex overflow-y-auto">
         <div className="py-[10px] px-[20px] w-[100%]">
-          <div className="px-[10px] pb-[10px] flex align-center justify-between">
+          <div className="px-[10px] py-[5px] flex items-center justify-between">
             <div>
               <div className="text-[27px] font-bold text-white">
                 {billData?.title}
@@ -77,7 +77,7 @@ function BillPage() {
             </div>
 
             {!isAddTrue && (
-              <div className="flex align-center justify-center space-x-3">
+              <div className="flex items-center justify-center space-x-3">
                 <div
                   className="bg-white text-green-700 h-max font-bold p-[4px] rounded-md cursor-pointer"
                   onClick={() => setIsAddTrue(!isAddTrue)}
@@ -95,7 +95,7 @@ function BillPage() {
           </div>
           <hr className="border-[1px] border-white" />
 
-          <div className="mt-[10px] h-[93%] overflow-y-auto flex align-center justify-evenly flex-wrap relative">
+          <div className="mt-[10px] h-[93%] overflow-y-auto flex items-center justify-evenly flex-wrap relative">
             {billData?.members &&
               billData?.members.map((member: any, index: any) => (
                 <div
@@ -105,7 +105,7 @@ function BillPage() {
                   <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
                     {member.name}
                   </div>
-                  <div className="flex align-center justify-between text-gray-700 text-md">
+                  <div className="flex items-center justify-between text-gray-700 text-md">
                     <div>Total spent</div>
                     <div>₹{member.totalSpends}</div>
                   </div>
@@ -118,7 +118,7 @@ function BillPage() {
                       idx !== index && (
                         <div
                           key={idx}
-                          className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600 text-sm"
+                          className="flex items-center justify-between my-[5px] border-b-[1px] border-green-600 text-sm"
                         >
                           <div>{mbr.name}</div>
                           <div className="border-b-[0px]">
@@ -132,9 +132,9 @@ function BillPage() {
               ))}
 
             {isAddTrue && (
-              <div className="fixed h-[90%] w-[75%] bg-green-600 flex align-center justify-center">
-                <div className="w-[400px] m-auto h-max bg-white p-[10px] shadow-xl rounded-md">
-                  <div className="flex align-center justify-between p-[2px]">
+              <div className="fixed h-[90%] w-[75%] bg-green-600 flex items-center justify-center">
+                <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
+                  <div className="flex items-center justify-between p-[2px]">
                     <div className="text-[19px] font-bold">Add Spends</div>
                     <div>
                       <CloseIcon
