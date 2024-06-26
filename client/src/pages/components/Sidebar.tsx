@@ -62,7 +62,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="p-[15px] w-[25%] h-[100vh] flex flex-col justify-between bg-white">
+      <div className="p-[15px] w-[25%] h-[100vh] flex flex-col justify-between bg-white shadow-xl">
         <div>
           <div className="p-[5px] my-[10px] text-[25px] bg-green-700 font-bold text-white text-center cursor-default">
             Split - your - bills
