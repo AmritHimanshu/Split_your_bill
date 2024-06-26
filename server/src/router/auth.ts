@@ -94,6 +94,16 @@ router.post("/create-new-bill", authenticate, async (req: any, res) => {
   }
 });
 
+router.get("/getBills", authenticate, async (req: any, res) => {
+  try {
+    const bills = await Bill.find({ createdBy: req.userID }).select("-members").sort("-date");
+    res.status(200).json(bills);
+  } catch (error) {
+    console.log("/getBills " + error);
+    res.status(503).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/user", authenticate, (req: any, res) => {
   res.status(200).send(req.rootUser);
 });
