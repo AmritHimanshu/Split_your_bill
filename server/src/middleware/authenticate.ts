@@ -36,11 +36,10 @@ const authenticate = async (
 
     next();
   } catch (error: any) {
-    console.log(error)
     if (error.name === "TokenExpiredError") {
-      res.status(401).send("Unauthorized: Token has expired");
+      return res.status(401).send("Unauthorized: Token has expired");
     } else {
-      res.status(401).send("Unauthorized: No valid token provided");
+      return res.status(401).send("Unauthorized: No valid token provided");
     }
   }
 };

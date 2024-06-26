@@ -21,6 +21,9 @@ function AddNewBill() {
           credentials: "include",
         });
 
+        if (res.status === 401) {
+          router.push("/login");
+        }
         const data = await res.json();
       } catch (error) {
         console.log(error);
@@ -70,7 +73,7 @@ function AddNewBill() {
     const memberNames = noOfInputs.map((input) => input.memberName);
 
     try {
-      const res = await fetch(`${BASE_URL}/createBill`, {
+      const res = await fetch(`${BASE_URL}/create-new-bill`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,8 +86,8 @@ function AddNewBill() {
       });
 
       const data = await res.json();
-      if (res.status !== 200 || !data) {
-        return window.alert(`${data.error}`);
+      if (res.status === 401) {
+        router.push("/login");
       } else {
         router.push(`/${username}`);
       }

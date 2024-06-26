@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
   try {
     const userExist = await User.findOne({ email: email });
     if (!userExist) {
-      return res.status(404).json({ error: "Invalid Credentials" });
+      return res.status(400).json({ error: "Invalid Credentials" });
     }
     const isMatch = await bcrypt.compare(password, userExist.password);
     const Token = await userExist.generateAuthToken();
@@ -69,6 +69,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post('/create-new-bil',authenticate,(req,res)=>{
+
+});
+
 router.get('/user', authenticate, (req:any, res) => {
   res.status(200).send(req.rootUser);
 });
@@ -76,7 +80,7 @@ router.get('/user', authenticate, (req:any, res) => {
 router.get('/logout', (req, res) => {
   res.clearCookie('jwtoken', { path: '/' });
   res.status(200).json({ message: 'User Logout' });
-})
+});
 
 router.get("/", (req, res) => {
   res.json({ message: "Hello, TypeScript Node Express!" });

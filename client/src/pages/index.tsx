@@ -17,6 +17,7 @@ export default function Home() {
           credentials: "include",
         });
 
+        if(res.status === 401) router.push('/login');
         const data = await res.json();
         if (data) {
           router.push(`/${[data.name]}`);

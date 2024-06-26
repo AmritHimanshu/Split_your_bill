@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -7,6 +7,24 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 function Register() {
   const BASE_URL = "http://localhost:5000";
   const router = useRouter();
+
+  useEffect(()=>{
+    const logOut = async ()=>{
+      try {
+        const res = await fetch(`${BASE_URL}/logout`,{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          credentials:'include'
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    logOut();
+  },[]);
 
   const [visible, setVisible] = useState(false);
   const [cvisible, setCVisible] = useState(false);

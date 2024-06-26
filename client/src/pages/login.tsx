@@ -28,7 +28,7 @@ function Login() {
     }
 
     logOut();
-  },[])
+  },[]);
 
   const loginUser = async (e: any) => {
     e.preventDefault();
