@@ -85,10 +85,13 @@ function AddNewBill() {
         }),
       });
 
-      const data = await res.json();
       if (res.status === 401) {
         router.push("/login");
-      } else {
+      }
+      const data = await res.json();
+      if (res.status === 206) return window.alert(`${data.error}`);
+      if (res.status === 200) {
+        window.alert(`${data.message}`);
         router.push(`/${username}`);
       }
     } catch (error) {

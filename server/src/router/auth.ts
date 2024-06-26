@@ -7,7 +7,6 @@ const authenticate = require("../middleware/authenticate");
 
 const User = require("../model/userSchema");
 
-
 router.post("/register", async (req, res) => {
   const { name, email, phone, password, cpassword } = req.body;
   const regex = /^[0-9]+$/;
@@ -69,17 +68,23 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post('/create-new-bil',authenticate,(req,res)=>{
-
+router.post("/create-new-bill", authenticate, (req, res) => {
+  const { title, memberNames } = req.body;
+  console.log(title, memberNames);
+  if (!title) return res.status(206).json({ error: "Fill all the fields" });
+  memberNames.map((item: string, index: number) => {
+    if (item === "")
+      return res.status(206).json({ error: `Member ${index + 1} is empty` });
+  });
 });
 
-router.get('/user', authenticate, (req:any, res) => {
+router.get("/user", authenticate, (req: any, res) => {
   res.status(200).send(req.rootUser);
 });
 
-router.get('/logout', (req, res) => {
-  res.clearCookie('jwtoken', { path: '/' });
-  res.status(200).json({ message: 'User Logout' });
+router.get("/logout", (req, res) => {
+  res.clearCookie("jwtoken", { path: "/" });
+  res.status(200).json({ message: "User Logout" });
 });
 
 router.get("/", (req, res) => {
