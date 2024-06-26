@@ -103,21 +103,21 @@ function AddNewBill() {
   return (
     <div className="flex h-[100vh] bg-green-600">
       <Sidebar />
-      <div className="w-[75%] py-[20px] flex overflow-y-auto">
-        <div className="bg-white p-[25px] rounded-md w-[500px] m-auto shadow-xl">
-          <div className="text-[20px] mb-[25px] text-[rgb(0,144,72)]">
+      <div className="w-[100%] lg:w-[75%] py-[20px] flex overflow-y-auto">
+        <div className="bg-white p-[20px] md:p-[25px] rounded-md min-w-[350px] md:w-[500px] m-auto shadow-xl">
+          <div className="text-[18px] md:text-[22px] mb-[25px] text-[rgb(0,144,72)]">
             Add New
           </div>
           <form className="space-y-5">
             <div className="addNew-form-title space-y-2 border-b-2">
               <label
                 htmlFor="title"
-                className="text-[rgb(87,87,87)] text-[17px]"
+                className="text-[rgb(87,87,87)] text-[14px] md:text-[18px]"
               >
                 Title
               </label>
               <input
-                className="text-[18px] w-full outline-0 placeholder:text-[15px]"
+                className="text-[14px] md:text-[18px] w-full outline-0 md:placeholder:text-[15px]"
                 id="title"
                 name="title"
                 type="text"
@@ -132,13 +132,13 @@ function AddNewBill() {
                 <div className="addNew-form-member space-y-2 border-b-2">
                   <label
                     htmlFor={`member${index + 1}`}
-                    className="text-[rgb(87,87,87)] text-[17px]"
+                    className="text-[rgb(87,87,87)] text-[14px] md:text-[18px]"
                   >
                     Member {index + 1}:
                   </label>
                   <div className="flex items-center">
                     <input
-                      className="text-[18px] w-full outline-0 placeholder:text-[15px]"
+                      className="text-[14px] md:text-[18px] w-full outline-0 md:placeholder:text-[15px]"
                       id={`member${index + 1}`}
                       name={`member${index + 1}`}
                       value={item.memberName}
@@ -149,7 +149,7 @@ function AddNewBill() {
 
                     {index >= 2 && (
                       <DeleteIcon
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", fontSize:"20px" }}
                         onClick={() => handleDeleteInput(index)}
                       />
                     )}
@@ -169,7 +169,7 @@ function AddNewBill() {
             ))}
 
             <button
-              className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
+              className="text-[14px] md:text-[16px] p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
               onClick={handleOnCreate}
             >
               Create
