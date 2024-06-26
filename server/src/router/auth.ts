@@ -96,10 +96,26 @@ router.post("/create-new-bill", authenticate, async (req: any, res) => {
 
 router.get("/getBills", authenticate, async (req: any, res) => {
   try {
-    const bills = await Bill.find({ createdBy: req.userID }).select("-members").sort("-date");
+    const bills = await Bill.find({ createdBy: req.userID })
+      .select("-members")
+      .sort("-date");
     res.status(200).json(bills);
   } catch (error) {
     console.log("/getBills " + error);
+    res.status(503).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/:id/getsinglebill", authenticate, async (req:any, res) => {
+  try {
+    const id = req.params.id;
+    const bill = await Bill.findOne({ _id: id });
+    if (!bill) {
+      return res.status(422).json({ error: "Bill not found" });
+  }
+  res.status(200).json(bill);
+  } catch (error) {
+    console.log("/getsinglebill " + error);
     res.status(503).json({ error: "Internal Server Error" });
   }
 });

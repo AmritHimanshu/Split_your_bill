@@ -1,11 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Sidebar from "../../components/Sidebar";
 import CloseIcon from "@mui/icons-material/Close";
 
 function BillPage() {
+  const BASE_URL = "http://localhost:5000";
+
+  const router = useRouter();
+  const { id } = router.query;
+
   const [isTrue, setIsTrue] = useState(false);
   const [selectedMember, setSelectedMember] = useState("");
   const [inputAmount, setInputAmount] = useState("");
+  const [selectedBill,setSelectedBill] = useState<any>();
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (res.status === 401) router.push("/login");
+      } catch (error) {
+        console.log(error);
+        router.push("/login");
+      }
+    };
+
+    const getSingleBill = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/${id}/getsinglebill`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        if (res.status === 401) router.push("/login");
+        const data = await res.json();
+        if (res.status === 422) return window.alert(`${data.error}`);
+        setSelectedBill(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getSingleBill();
+    getData();
+  }, [router, id]);
 
   return (
     <div className="flex h-[100vh] bg-green-600">
@@ -15,7 +62,7 @@ function BillPage() {
           <div className="px-[10px] pb-[10px] flex align-center justify-between">
             <div>
               <div className="text-[27px] font-bold text-white">
-                Jammu & Kashmir
+                {selectedBill?.title}
               </div>
               <div className="text-[14px] text-white">25/06/2024</div>
             </div>
@@ -188,7 +235,9 @@ function BillPage() {
                       <hr className="border-[1px] border-[rgb(116,116,116)]" />
                     </div>
 
-                    <button className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105">Add</button>
+                    <button className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105">
+                      Add
+                    </button>
                   </div>
                 </div>
               </div>
