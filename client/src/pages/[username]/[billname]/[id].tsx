@@ -12,7 +12,7 @@ function BillPage() {
   const [isTrue, setIsTrue] = useState(false);
   const [selectedMember, setSelectedMember] = useState("");
   const [inputAmount, setInputAmount] = useState("");
-  const [selectedBill, setSelectedBill] = useState<any>();
+  const [billData, setBillData] = useState<any>();
 
   useEffect(() => {
     const getData = async () => {
@@ -44,7 +44,7 @@ function BillPage() {
         if (res.status === 401) router.push("/login");
         const data = await res.json();
         if (res.status === 422) return window.alert(`${data.error}`);
-        setSelectedBill(data);
+        setBillData(data);
       } catch (error) {
         console.log(error);
       }
@@ -62,11 +62,11 @@ function BillPage() {
           <div className="px-[10px] pb-[10px] flex align-center justify-between">
             <div>
               <div className="text-[27px] font-bold text-white">
-                {selectedBill?.title}
+                {billData?.title}
               </div>
               <div className="text-[14px] text-white">
-                {selectedBill &&
-                  new Date(selectedBill?.date).toLocaleDateString(undefined, {
+                {billData &&
+                  new Date(billData?.date).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -86,111 +86,37 @@ function BillPage() {
           <hr className="border-[1px] border-white" />
 
           <div className="mt-[10px] h-[93%] overflow-y-auto flex align-center justify-evenly flex-wrap relative">
-            <div className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl">
-              <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
-                Himanshu
-              </div>
-              <div className="flex align-center justify-between">
-                <div>Total spent</div>
-                <div>₹375</div>
-              </div>
-              <hr className="border-[1px] border-[rgb(116,116,116)]" />
-              <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
-                Pay to
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Dhiraj</div>
-                <div className="border-b-[0px]"> ₹320</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Vikash</div>
-                <div className="border-b-[0px]"> ₹290</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Ashish</div>
-                <div className="border-b-[0px]"> ₹50</div>
-              </div>
-            </div>
-            {/* ------------------------------------------------------ */}
-            <div className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl">
-              <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
-                Himanshu
-              </div>
-              <div className="flex align-center justify-between">
-                <div>Total spent</div>
-                <div>₹375</div>
-              </div>
-              <hr className="border-[1px] border-[rgb(116,116,116)]" />
-              <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
-                Pay to
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Dhiraj</div>
-                <div className="border-b-[0px]"> ₹320</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Vikash</div>
-                <div className="border-b-[0px]"> ₹290</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Ashish</div>
-                <div className="border-b-[0px]"> ₹50</div>
-              </div>
-            </div>
-
-            <div className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl">
-              <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
-                Himanshu
-              </div>
-              <div className="flex align-center justify-between">
-                <div>Total spent</div>
-                <div>₹375</div>
-              </div>
-              <hr className="border-[1px] border-[rgb(116,116,116)]" />
-              <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
-                Pay to
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Dhiraj</div>
-                <div className="border-b-[0px]"> ₹320</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Vikash</div>
-                <div className="border-b-[0px]"> ₹290</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Ashish</div>
-                <div className="border-b-[0px]"> ₹50</div>
-              </div>
-            </div>
-
-            <div className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl">
-              <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
-                Himanshu
-              </div>
-              <div className="flex align-center justify-between">
-                <div>Total spent</div>
-                <div>₹375</div>
-              </div>
-              <hr className="border-[1px] border-[rgb(116,116,116)]" />
-              <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
-                Pay to
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Dhiraj</div>
-                <div className="border-b-[0px]"> ₹320</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Vikash</div>
-                <div className="border-b-[0px]"> ₹290</div>
-              </div>
-              <div className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600">
-                <div>Ashish</div>
-                <div className="border-b-[0px]"> ₹50</div>
-              </div>
-            </div>
-
-            {/* ----------------------------------------------------- */}
+            {billData?.members &&
+              billData?.members.map((member: any, index: any) => (
+                <div
+                  key={index}
+                  className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl"
+                >
+                  <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
+                    {member.name}
+                  </div>
+                  <div className="flex align-center justify-between">
+                    <div>Total spent</div>
+                    <div>₹{member.totalSpends}</div>
+                  </div>
+                  <hr className="border-[1px] border-[rgb(116,116,116)]" />
+                  <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
+                    Pay to
+                  </div>
+                  {billData?.members.map(
+                    (mbr: any, idx: any) =>
+                      idx !== index && (
+                        <div
+                          key={idx}
+                          className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600"
+                        >
+                          <div>{mbr.name}</div>
+                          <div className="border-b-[0px]"> ₹{mbr.totalSpends}</div>
+                        </div>
+                      )
+                  )}
+                </div>
+              ))}
 
             {isTrue && (
               <div className="fixed h-[90%] w-[75%] bg-green-600 flex align-center justify-center">
