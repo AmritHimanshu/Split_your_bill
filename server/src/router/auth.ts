@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 import cookieParser from "cookie-parser";
 router.use(cookieParser());
 const authenticate = require("../middleware/authenticate");
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 const User = require("../model/userSchema");
 const Bill = require("../model/billSchema");
@@ -107,8 +109,11 @@ router.get("/getBills", authenticate, async (req: any, res) => {
 });
 
 router.get("/:id/getsinglebill", authenticate, async (req:any, res) => {
+  const id = req.params.id;
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).send({ error: 'Invalid ID format' });
+}
   try {
-    const id = req.params.id;
     const bill = await Bill.findOne({ _id: id });
     if (!bill) {
       return res.status(422).json({ error: "Bill not found" });

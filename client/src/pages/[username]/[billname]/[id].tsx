@@ -9,7 +9,7 @@ function BillPage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [isTrue, setIsTrue] = useState(false);
+  const [isAddTrue, setIsAddTrue] = useState(false);
   const [selectedMember, setSelectedMember] = useState("");
   const [inputAmount, setInputAmount] = useState("");
   const [billData, setBillData] = useState<any>();
@@ -50,7 +50,9 @@ function BillPage() {
       }
     };
 
-    getSingleBill();
+    {
+      id && getSingleBill();
+    }
     getData();
   }, [router, id]);
 
@@ -74,12 +76,20 @@ function BillPage() {
               </div>
             </div>
 
-            {!isTrue && (
-              <div
-                className="bg-white text-green-700 h-max font-bold p-[5px] rounded-md cursor-pointer"
-                onClick={() => setIsTrue(!isTrue)}
-              >
-                Add Spends
+            {!isAddTrue && (
+              <div className="flex align-center justify-center space-x-3">
+                <div
+                  className="bg-white text-green-700 h-max font-bold p-[4px] rounded-md cursor-pointer"
+                  onClick={() => setIsAddTrue(!isAddTrue)}
+                >
+                  + Add
+                </div>
+                <div
+                  className="bg-white text-green-700 h-max font-bold p-[4px] rounded-md cursor-pointer"
+                  onClick={() => setIsAddTrue(!isAddTrue)}
+                >
+                  - Subs
+                </div>
               </div>
             )}
           </div>
@@ -111,26 +121,29 @@ function BillPage() {
                           className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600 text-sm"
                         >
                           <div>{mbr.name}</div>
-                          <div className="border-b-[0px]"> ₹{mbr.totalSpends}</div>
+                          <div className="border-b-[0px]">
+                            {" "}
+                            ₹{mbr.totalSpends}
+                          </div>
                         </div>
                       )
                   )}
                 </div>
               ))}
 
-            {isTrue && (
+            {isAddTrue && (
               <div className="fixed h-[90%] w-[75%] bg-green-600 flex align-center justify-center">
-                <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
+                <div className="w-[400px] m-auto h-max bg-white p-[10px] shadow-xl rounded-md">
                   <div className="flex align-center justify-between p-[2px]">
                     <div className="text-[19px] font-bold">Add Spends</div>
                     <div>
                       <CloseIcon
                         style={{ cursor: "pointer" }}
-                        onClick={() => setIsTrue(!isTrue)}
+                        onClick={() => setIsAddTrue(!isAddTrue)}
                       />
                     </div>
                   </div>
-                  <hr className="border-[1px] border-[rgb(116,116,116)]" />
+                  <hr className="my-2 border-[1px] border-[rgb(116,116,116)]" />
                   <div>
                     <div>
                       <label
@@ -147,11 +160,11 @@ function BillPage() {
                         onChange={(e) => setSelectedMember(e.target.value)}
                       >
                         <option value="">Select member</option>
-                        <option>Himanshu</option>
-                        <option>Vikash</option>
-                        <option>Dhiraj</option>
-                        <option>Ashish</option>
-                        <option>Rahul</option>
+                        {billData?.members.map((member: any, index: any) => (
+                          <option key={index} value={member._id}>
+                            {member.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
