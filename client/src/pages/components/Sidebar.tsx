@@ -78,9 +78,9 @@ function Sidebar() {
       if (res.status !== 200) {
         return window.alert(`${data.error}`);
       }
-      if(res.status === 200){
+      if (res.status === 200) {
         window.alert("Successfully deleted");
-        window.location.reload();
+        router.push(`/${username}`);
       }
     } catch (error) {
       console.log(error);
@@ -192,7 +192,7 @@ function Sidebar() {
                 {bills?.map((bill: any, index) => (
                   <div
                     key={index}
-                    className="flex items-center border-b-[1px] border-[rgb(141,141,141)]"
+                    className="flex items-center border-b-[1px] border-[rgb(141,141,141)] relative"
                   >
                     <MoreVertIcon
                       className="hover:bg-gray-300/40 rounded-2xl p-1"
@@ -201,7 +201,18 @@ function Sidebar() {
                         cursor: "pointer",
                         color: "black",
                       }}
+                      onClick={() =>
+                        delId !== bill._id ? setDelId(bill._id) : setDelId("")
+                      }
                     />
+                    {delId === bill._id && (
+                      <div
+                        className="absolute z-10 bg-white text-black p-2 px-3 bottom-[-21px] rounded-sm shadow-md hover:cursor-pointer hover:bg-gray-100"
+                        onClick={() => handleBillOnDelete(bill._id)}
+                      >
+                        Delete
+                      </div>
+                    )}
                     <Link
                       href={`/${username}/${bill.title}/${bill._id}`}
                       className="w-full ml-5 my-[5px]"
