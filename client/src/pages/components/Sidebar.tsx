@@ -76,7 +76,7 @@ function Sidebar() {
             </Link>
 
             {bills?.map((bill: any, index) => (
-              <Link href={`/${username}/${bill.title}`} key={index}>
+              <Link href={`/${username}/${bill.title}/${bill._id}`} key={index}>
                 <div
                   key={index}
                   className={`border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] ${bill.title === billname ? "text-green-600 font-bold text-[20px]" : "text-[14px] text-gray-600"} flex align-center justify-between cursor-pointer`}
