@@ -95,11 +95,11 @@ function BillPage() {
                   <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
                     {member.name}
                   </div>
-                  <div className="flex align-center justify-between">
+                  <div className="flex align-center justify-between text-gray-700 text-md">
                     <div>Total spent</div>
                     <div>₹{member.totalSpends}</div>
                   </div>
-                  <hr className="border-[1px] border-[rgb(116,116,116)]" />
+                  <hr className="my-1 border-[1px] border-[rgb(116,116,116)]" />
                   <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
                     Pay to
                   </div>
@@ -108,7 +108,7 @@ function BillPage() {
                       idx !== index && (
                         <div
                           key={idx}
-                          className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600"
+                          className="flex align-center justify-between my-[5px] border-b-[1px] border-green-600 text-sm"
                         >
                           <div>{mbr.name}</div>
                           <div className="border-b-[0px]"> ₹{mbr.totalSpends}</div>
