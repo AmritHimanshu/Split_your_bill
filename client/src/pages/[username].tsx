@@ -3,7 +3,8 @@ import Sidebar from "./components/Sidebar";
 import { useEffect } from "react";
 
 export default function Home() {
-  const BASE_URL = "http://localhost:5000";
+  // const BASE_URL = "http://localhost:5000";
+  const BASE_URL = "https://split-your-bill-api.vercel.app";
   const router = useRouter();
 
   useEffect(() => {

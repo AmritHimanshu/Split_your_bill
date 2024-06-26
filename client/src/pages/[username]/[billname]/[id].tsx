@@ -4,7 +4,8 @@ import Sidebar from "../../components/Sidebar";
 import CloseIcon from "@mui/icons-material/Close";
 
 function BillPage() {
-  const BASE_URL = "http://localhost:5000";
+  // const BASE_URL = "http://localhost:5000";
+  const BASE_URL = "https://split-your-bill-api.vercel.app";
 
   const router = useRouter();
   const { id } = router.query;

@@ -5,7 +5,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function Login() {
-  const BASE_URL = "http://localhost:5000";
+  // const BASE_URL = "http://localhost:5000";
+  const BASE_URL = "https://split-your-bill-api.vercel.app";
   const router = useRouter();
 
   const [visible, setVisible] = useState(false);
