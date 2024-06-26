@@ -193,10 +193,22 @@ function BillPage() {
                           key={idx}
                           className="flex items-center justify-between my-[5px] border-b-[1px] border-green-600 text-sm"
                         >
-                          <div>{mbr.name}</div>
+                          <div>{mbr?.name}</div>
                           <div className="border-b-[0px]">
-                            {" "}
-                            ₹{mbr.totalSpends}
+                            {Number(member?.totalSpends) /
+                              billData.members.length >=
+                            Number(mbr?.totalSpends) /
+                              billData.members.length ? (
+                              <div> ₹0</div>
+                            ) : (
+                              <div>
+                                ₹
+                                {Number(mbr?.totalSpends) /
+                                  billData.members.length -
+                                  Number(member?.totalSpends) /
+                                    billData.members.length}
+                              </div>
+                            )}
                           </div>
                         </div>
                       )
@@ -269,7 +281,9 @@ function BillPage() {
               <div className="fixed h-[90%] w-[75%] bg-green-600 flex items-center justify-center">
                 <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
                   <div className="flex items-center justify-between p-[2px]">
-                    <div className="text-[19px] font-bold">Substract Spends</div>
+                    <div className="text-[19px] font-bold">
+                      Substract Spends
+                    </div>
                     <div>
                       <CloseIcon
                         style={{ cursor: "pointer" }}
