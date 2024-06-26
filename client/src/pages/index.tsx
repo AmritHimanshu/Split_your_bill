@@ -19,26 +19,17 @@ export default function Home() {
 
         const data = await res.json();
         if (data) {
-          router.push(`/${[data.name]}`)
+          router.push(`/${[data.name]}`);
           console.log(data);
         }
       } catch (error) {
         console.log(error);
-        router.push('/login')
+        router.push("/login");
       }
     };
 
     getData();
   }, [router]);
 
-  return (
-    <div className="flex h-[100vh] bg-green-600">
-      <Sidebar />
-      <div className="w-[75%] py-[20px] flex overflow-y-auto">
-        <div className="w-[100%] flex align-center justify-center text-[20px] font-bold text-[rgb(255,255,216)] tracking-wide cursor-default">
-          Select the bill
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="flex h-[100vh] bg-green-600"></div>;
 }
