@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 function Sidebar() {
   const BASE_URL = "http://localhost:5000";
@@ -76,19 +77,31 @@ function Sidebar() {
             </Link>
 
             {bills?.map((bill: any, index) => (
-              <Link href={`/${username}/${bill.title}/${bill._id}`} key={index}>
-                <div
+              <div
+                key={index}
+                className="flex items-center border-b-[1px] border-[rgb(141,141,141)]"
+              >
+                <MoreVertIcon
+                  className="hover:bg-gray-300/40 rounded-2xl p-1"
+                  style={{ fontSize: "30px", cursor: "pointer" }}
+                />
+                <Link
+                  href={`/${username}/${bill.title}/${bill._id}`}
                   key={index}
-                  className={`border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] ${
-                    bill.title === billname
-                      ? "text-green-600 font-bold text-[20px]"
-                      : "text-[14px] text-gray-600"
-                  } flex items-center justify-between cursor-pointer`}
+                  className="w-full ml-5 my-[10px]"
                 >
-                  <div className="">{bill.title}</div>
-                  {bill.title === billname && <ArrowRightIcon />}
-                </div>
-              </Link>
+                  <div
+                    className={`text-center px-[5px] my-[10px] ${
+                      bill.title === billname
+                        ? "text-green-600 font-bold text-[20px]"
+                        : "text-[14px] text-gray-600"
+                    } flex items-center justify-between cursor-pointer`}
+                  >
+                    <div className="">{bill.title}</div>
+                    {bill.title === billname && <ArrowRightIcon />}
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
         </div>
@@ -97,7 +110,7 @@ function Sidebar() {
           <div className="flex items-center cursor-pointer" title="Log out">
             {/* <img src="" alt="" /> */}
             <div className="text-[16px] font-bold text-black mx-[10px]">
-            Log Out ({user.name})
+              Log Out ({user.name})
             </div>
           </div>
         </Link>
@@ -105,7 +118,12 @@ function Sidebar() {
 
       <div className="lg:hidden absolute z-10">
         <MenuIcon
-          style={{ fontSize: "35px", cursor: "pointer", padding: "5px", color:"white" }}
+          style={{
+            fontSize: "35px",
+            cursor: "pointer",
+            padding: "5px",
+            color: "white",
+          }}
           onClick={() => setIsTrue(!isTrue)}
         />
         {isTrue && (
