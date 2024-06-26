@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 import cookieParser from "cookie-parser";
 router.use(cookieParser());
 const authenticate = require("../middleware/authenticate");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 
 const User = require("../model/userSchema");
@@ -96,6 +96,85 @@ router.post("/create-new-bill", authenticate, async (req: any, res) => {
   }
 });
 
+router.put("/addAmount/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const { selectedMember, inputAmount } = req.body;
+  try {
+    const existingBill = await Bill.findOne({
+      _id: id,
+      "members._id": selectedMember,
+    });
+    if (!existingBill) {
+      return res.status(404).json({ error: "Bill not found" });
+    }
+    const memberIndex = existingBill.members.findIndex(
+      (member: { _id: string }) => member._id.toString() === selectedMember
+    );
+    if (memberIndex === -1) {
+      return res.status(404).json({ error: "Member not found in the bill" });
+    }
+    const parsedTotalSpends = parseFloat(
+      existingBill.members[memberIndex].totalSpends
+    );
+    const inputAmountNumber = parseFloat(inputAmount);
+    const newTotalSpends = (parsedTotalSpends + inputAmountNumber).toString();
+    const bill = await Bill.findOneAndUpdate(
+      { _id: id, "members._id": selectedMember },
+      { $set: { "members.$.totalSpends": newTotalSpends } },
+      { new: true }
+    );
+    if (!bill) {
+      return res.status(404).json({ error: "Bill not found" });
+    } else {
+      return res.status(200).json(bill);
+    }
+  } catch (error) {
+    console.log("/addAmount " + error);
+    res.status(503).json({ error: "Internal Server Error" });
+  }
+});
+
+router.put("/subAmount/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const { selectedMember, inputAmount } = req.body;
+  try {
+    const existingBill = await Bill.findOne({
+      _id: id,
+      "members._id": selectedMember,
+    });
+    if (!existingBill) {
+      return res.status(404).json({ error: "Bill not found" });
+    }
+    const memberIndex = existingBill.members.findIndex(
+      (member: { _id: string }) => member._id.toString() === selectedMember
+    );
+    if (memberIndex === -1) {
+      return res.status(404).json({ error: "Member not found in the bill" });
+    }
+    const parsedTotalSpends = parseFloat(
+      existingBill.members[memberIndex].totalSpends
+    );
+    const inputAmountNumber = parseFloat(inputAmount);
+    const newTotalSpends = (parsedTotalSpends - inputAmountNumber).toString();
+    if(parseFloat(newTotalSpends) < 0) {
+      return res.status(404).json({error:"Can't substract this much amount"});
+    }
+    const bill = await Bill.findOneAndUpdate(
+      { _id: id, "members._id": selectedMember },
+      { $set: { "members.$.totalSpends": newTotalSpends } },
+      { new: true }
+    );
+    if (!bill) {
+      return res.status(404).json({ error: "Bill not found" });
+    } else {
+      return res.status(200).json(bill);
+    }
+  } catch (error) {
+    console.log("/subAmount " + error);
+    res.status(503).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/getBills", authenticate, async (req: any, res) => {
   try {
     const bills = await Bill.find({ createdBy: req.userID })
@@ -108,17 +187,17 @@ router.get("/getBills", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/:id/getsinglebill", authenticate, async (req:any, res) => {
+router.get("/:id/getsinglebill", authenticate, async (req: any, res) => {
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
-    return res.status(400).send({ error: 'Invalid ID format' });
-}
+    return res.status(400).send({ error: "Invalid ID format" });
+  }
   try {
     const bill = await Bill.findOne({ _id: id });
     if (!bill) {
       return res.status(422).json({ error: "Bill not found" });
-  }
-  res.status(200).json(bill);
+    }
+    res.status(200).json(bill);
   } catch (error) {
     console.log("/getsinglebill " + error);
     res.status(503).json({ error: "Internal Server Error" });
