@@ -132,14 +132,14 @@ function BillPage() {
   return (
     <div className="flex h-[100vh] bg-green-600">
       <Sidebar />
-      <div className="w-[75%] py-[20px] flex overflow-y-auto">
-        <div className="py-[10px] px-[20px] w-[100%]">
+      <div className="w-[100%] lg:w-[75%] py-[20px] flex overflow-y-auto">
+        <div className="py-[10px] md:px-[20px] w-[100%]">
           <div className="px-[10px] py-[5px] flex items-center justify-between">
             <div>
-              <div className="text-[27px] font-bold text-white">
+              <div className="text-[20px] md:text-[27px] font-bold text-white">
                 {billData?.title}
               </div>
-              <div className="text-[14px] text-white">
+              <div className="text-[11px] md:text-[14px] text-white">
                 {billData &&
                   new Date(billData?.date).toLocaleDateString(undefined, {
                     year: "numeric",
@@ -150,15 +150,15 @@ function BillPage() {
             </div>
 
             {!isAddTrue && !isSubTrue && (
-              <div className="flex items-center justify-center space-x-3">
+              <div className="flex items-center justify-center space-x-2 md:space-x-3">
                 <div
-                  className="bg-white text-green-700 h-max font-bold p-[4px] rounded-md cursor-pointer"
+                  className="bg-white text-green-700 h-max md:font-bold p-[3px] md:p-[4px] rounded-sm md:rounded-md cursor-pointer"
                   onClick={() => setIsAddTrue(!isAddTrue)}
                 >
                   + Add
                 </div>
                 <div
-                  className="bg-white text-green-700 h-max font-bold p-[4px] rounded-md cursor-pointer"
+                  className="bg-white text-green-700 h-max md:font-bold p-[3px] md:p-[4px] rounded-sm md:rounded-md cursor-pointer"
                   onClick={() => setIsSubTrue(!isSubTrue)}
                 >
                   - Subs
@@ -175,15 +175,15 @@ function BillPage() {
                   key={index}
                   className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl"
                 >
-                  <div className="text-[19px] font-bold text-[rgb(0,144,72)]">
+                  <div className="text-[16px] md:text-[19px] font-bold text-[rgb(0,144,72)]">
                     {member.name}
                   </div>
-                  <div className="flex items-center justify-between text-gray-700 text-md">
+                  <div className="flex items-center justify-between text-gray-700 text-sm md:text-md">
                     <div>Total spent</div>
                     <div>₹{member.totalSpends}</div>
                   </div>
                   <hr className="my-1 border-[1px] border-[rgb(116,116,116)]" />
-                  <div className="font-bold mb-[3px] text-[rgb(76,76,76)]">
+                  <div className="font-bold mb-[3px] text-sm md:text-md text-[rgb(76,76,76)]">
                     Pay to
                   </div>
                   {billData?.members.map(
@@ -217,13 +217,13 @@ function BillPage() {
               ))}
 
             {isAddTrue && (
-              <div className="fixed h-[90%] w-[75%] bg-green-600 flex items-center justify-center">
+              <div className="fixed h-[90%] w-[100%] lg:w-[75%] bg-green-600 flex items-center justify-center">
                 <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
                   <div className="flex items-center justify-between p-[2px]">
-                    <div className="text-[19px] font-bold">Add Spends</div>
+                    <div className="text-[15px] md:text-[19px] font-bold">Add Spends</div>
                     <div>
                       <CloseIcon
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", fontSize:"20px" }}
                         onClick={() => setIsAddTrue(!isAddTrue)}
                       />
                     </div>
@@ -233,12 +233,12 @@ function BillPage() {
                     <div>
                       <label
                         htmlFor="selectedFruit"
-                        className="text-black text-[16px]"
+                        className="text-black text-[14px] md:text-[16px]"
                       >
                         Choose member:
                       </label>
                       <select
-                        className="border-[1px] border-[rgb(85,85,85)]"
+                        className="border-[1px] border-[rgb(85,85,85)] text-[13px] md:text-[16px]"
                         name="selectedFruit"
                         id="selectedFruit"
                         style={{ display: "block" }}
@@ -260,7 +260,7 @@ function BillPage() {
                         id="spend"
                         name="spend"
                         value={inputAmount}
-                        className="text-[18px] w-full outline-0 placeholder:text-[15px]"
+                        className="text-[15px] md:text-[18px] w-full outline-0 placeholder:text-[15px]"
                         onChange={(e) => setInputAmount(e.target.value)}
                       />
                       <hr className="border-[1px] border-[rgb(116,116,116)]" />
@@ -278,30 +278,28 @@ function BillPage() {
             )}
 
             {isSubTrue && (
-              <div className="fixed h-[90%] w-[75%] bg-green-600 flex items-center justify-center">
+              <div className="fixed h-[90%] w-[100%] lg:w-[75%] bg-green-600 flex items-center justify-center">
                 <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
                   <div className="flex items-center justify-between p-[2px]">
-                    <div className="text-[19px] font-bold">
-                      Substract Spends
-                    </div>
+                  <div className="text-[15px] md:text-[19px] font-bold">Substract Spends</div>
                     <div>
                       <CloseIcon
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", fontSize:"20px" }}
                         onClick={() => setIsSubTrue(!isSubTrue)}
                       />
                     </div>
                   </div>
                   <hr className="my-2 border-[1px] border-[rgb(116,116,116)]" />
                   <div>
-                    <div>
+                  <div>
                       <label
                         htmlFor="selectedFruit"
-                        className="text-black text-[16px]"
+                        className="text-black text-[14px] md:text-[16px]"
                       >
                         Choose member:
                       </label>
                       <select
-                        className="border-[1px] border-[rgb(85,85,85)]"
+                        className="border-[1px] border-[rgb(85,85,85)] text-[13px] md:text-[16px]"
                         name="selectedFruit"
                         id="selectedFruit"
                         style={{ display: "block" }}
@@ -323,7 +321,7 @@ function BillPage() {
                         id="spend"
                         name="spend"
                         value={inputAmount}
-                        className="text-[18px] w-full outline-0 placeholder:text-[15px]"
+                        className="text-[15px] md:text-[18px] w-full outline-0 placeholder:text-[15px]"
                         onChange={(e) => setInputAmount(e.target.value)}
                       />
                       <hr className="border-[1px] border-[rgb(116,116,116)]" />
@@ -333,7 +331,7 @@ function BillPage() {
                       className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
                       onClick={subAmount}
                     >
-                      Add
+                      Substract
                     </button>
                   </div>
                 </div>
