@@ -34,8 +34,8 @@ export default function Home() {
   return (
     <div className="flex h-[100vh] bg-green-600">
       <Sidebar />
-      <div className="w-[75%] py-[20px] flex overflow-y-auto">
-        <div className="w-[100%] flex items-center justify-center text-[20px] font-bold text-[rgb(255,255,216)] tracking-wide cursor-default">
+      <div className="w-[100%] lg:w-[75%] py-[20px] flex overflow-y-auto">
+        <div className="w-[100%] flex items-center justify-center text-[20px] font-bold text-white tracking-wide cursor-default">
           Select the bill
         </div>
       </div>

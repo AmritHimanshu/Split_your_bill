@@ -105,7 +105,7 @@ function Sidebar() {
 
       <div className="lg:hidden absolute z-10">
         <MenuIcon
-          style={{ fontSize: "35px", cursor: "pointer", padding: "5px" }}
+          style={{ fontSize: "35px", cursor: "pointer", padding: "5px", color:"white" }}
           onClick={() => setIsTrue(!isTrue)}
         />
         {isTrue && (
