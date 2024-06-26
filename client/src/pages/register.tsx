@@ -88,14 +88,14 @@ function Register() {
 
   return (
     <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-600">
-      <div className="w-[500px] p-[20px] bg-white m-auto rounded-md shadow-lg">
-        <div className="my-[10px] text-center text-[22px] text-green-600">
+      <div className="min-w-[345px] md:w-[500px] p-[15px] md:p-[20px] bg-white m-auto rounded-md shadow-lg">
+        <div className="my-[10px] text-center text-[18px] md:text-[22px] text-green-600">
           Register
         </div>
         <div>
           <form onSubmit={registerUser}>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="name" className="text-[18px] text-black">
+              <label htmlFor="name" className="text-[14px] md:text-[18px] text-black">
                 Name
               </label>
               <input
@@ -104,12 +104,12 @@ function Register() {
                 id="name"
                 value={inputData.name}
                 placeholder="Enter your name"
-                className="outline-0 w-full"
+                className="outline-0 w-full text-[14px] md:text-[18px]"
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="email" className="text-[18px] text-black">
+              <label htmlFor="email" className="text-[14px] md:text-[18px] text-black">
                 Email
               </label>
               <input
@@ -118,12 +118,12 @@ function Register() {
                 id="email"
                 value={inputData.email}
                 placeholder="Enter your email"
-                className="outline-0 w-full"
+                className="outline-0 w-full text-[14px] md:text-[18px]"
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="phone" className="text-[18px] text-black">
+              <label htmlFor="phone" className="text-[14px] md:text-[18px] text-black">
                 Phone Number
               </label>
               <input
@@ -132,12 +132,12 @@ function Register() {
                 id="phone"
                 value={inputData.phone}
                 placeholder="Enter your phone number"
-                className="outline-0 w-full"
+                className="outline-0 w-full text-[14px] md:text-[18px]"
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="password" className="text-[18px] text-black">
+              <label htmlFor="password" className="text-[14px] md:text-[18px] text-black">
                 Password
               </label>
               <div className="flex items-center">
@@ -147,24 +147,24 @@ function Register() {
                   id="password"
                   value={inputData.password}
                   placeholder="Enter your password"
-                  className="outline-0 w-full"
+                  className="outline-0 w-full text-[14px] md:text-[18px]"
                   onChange={(e) => handleOnChange(e)}
                 />
                 {visible ? (
                   <VisibilityIcon
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer",fontSize:"20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 ) : (
                   <VisibilityOffIcon
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer",fontSize:"20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 )}
               </div>
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="cpassword" className="text-[18px] text-black">
+              <label htmlFor="cpassword" className="text-[14px] md:text-[18px] text-black">
                 Confirm Password
               </label>
               <div className="flex items-center">
@@ -174,29 +174,29 @@ function Register() {
                   id="cpassword"
                   value={inputData.cpassword}
                   placeholder="Re-enter your password"
-                  className="outline-0 w-full"
+                  className="outline-0 w-full text-[14px] md:text-[18px]"
                   onChange={(e) => handleOnChange(e)}
                 />
                 {cvisible ? (
                   <VisibilityIcon
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize:"20px" }}
                     onClick={() => setCVisible(!cvisible)}
                   />
                 ) : (
                   <VisibilityOffIcon
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize:"20px" }}
                     onClick={() => setCVisible(!cvisible)}
                   />
                 )}
               </div>
             </div>
 
-            <button className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 rounded-md pointer">
+            <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 rounded-md pointer">
               Register
             </button>
           </form>
 
-          <div className="text-center mt-[10px] mb-[5px]">
+          <div className="text-center mt-[10px] mb-[5px] text-[14px] md:text-[16px]">
             <span className="mx-[5px]">Already have an account?</span>
             <Link href="/login">
               <span className="mx-[5px] text-green-600 underline">

@@ -62,14 +62,14 @@ function Login() {
 
   return (
     <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-600">
-      <div className="w-[500px] p-[20px] bg-white m-auto rounded-md shadow-lg">
-        <div className="my-[10px] text-center text-[22px] text-green-600">
+      <div className="min-w-[345px] md:w-[500px] p-[15px] md:p-[20px] bg-white m-auto rounded-md shadow-lg">
+        <div className="my-[10px] text-center text-[18px] md:text-[22px] text-green-600">
           Login
         </div>
         <div>
           <form onSubmit={loginUser}>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="email" className="text-[18px] text-black">
+              <label htmlFor="email" className="text-[14px] md:text-[18px] text-black">
                 Email
               </label>
               <div>
@@ -79,13 +79,13 @@ function Login() {
                   id="email"
                   value={email}
                   placeholder="Enter your email"
-                  className="outline-0 w-full"
+                  className="outline-0 w-full text-[14px] md:text-[18px]"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="password" className="text-[18px] text-black">
+              <label htmlFor="password" className="text-[14px] md:text-[18px] text-black">
                 Password
               </label>
               <div className="flex items-center justify-between">
@@ -95,29 +95,29 @@ function Login() {
                   id="password"
                   value={password}
                   placeholder="Enter your password"
-                  className="outline-0 w-full"
+                  className="outline-0 w-full text-[14px] md:text-[18px]"
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 {visible ? (
                   <VisibilityIcon
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize:"20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 ) : (
                   <VisibilityOffIcon
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize:"20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 )}
               </div>
             </div>
 
-            <button className="p-[10px] mt-[25px] w-[100%] text-center text-white bg-[rgb(0,144,72)] font-bold rounded-md cursor-pointer">
+            <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center text-white bg-[rgb(0,144,72)] font-bold rounded-md cursor-pointer">
               Login
             </button>
           </form>
 
-          <div className="text-center mt-[10px] mb-[5px]">
+          <div className="text-center mt-[10px] mb-[5px] text-[14px] md:text-[16px]">
             <span className="mx-[5px]">Don&rsquo;t have an account?</span>
             <Link href="/register">
               <span className="mx-[5px] text-green-600 underline">
