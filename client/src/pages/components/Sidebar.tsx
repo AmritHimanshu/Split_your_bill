@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 function Sidebar() {
   const BASE_URL = "http://localhost:5000";
 
   const router = useRouter();
-  const { username,billname } = router.query;
+  const { username, billname } = router.query;
 
   const [isTrue, setIsTrue] = useState(false);
   const [user, setUser] = useState<any>({});
@@ -74,13 +75,15 @@ function Sidebar() {
               </div>
             </Link>
 
-            {bills?.map((bill:any, index) => (
+            {bills?.map((bill: any, index) => (
               <Link href={`/${username}/${bill.title}`} key={index}>
-                <div key={index} className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[20px] text-green-600 font-bold flex align-center justify-between cursor-pointer">
-                <div className="">{bill.title}</div>
-                {/* <div className="hover:text-[rgb(255,255,216)]">Jammu & Kashmir</div> */}
-                {/* <div className="text-[rgb(185,185,185)]">{new Date().toLocaleDateString()}</div> */}
-              </div>
+                <div
+                  key={index}
+                  className={`border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] ${bill.title === billname ? "text-green-600 font-bold text-[20px]" : "text-[14px] text-gray-600"} flex align-center justify-between cursor-pointer`}
+                >
+                  <div className="">{bill.title}</div>
+                  {bill.title === billname && <ArrowRightIcon />}
+                </div>
               </Link>
             ))}
           </div>
