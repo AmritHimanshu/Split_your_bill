@@ -4,6 +4,7 @@ import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Image from "next/image";
 
 function Sidebar() {
   const BASE_URL = "http://localhost:5000";
@@ -151,7 +152,13 @@ function Sidebar() {
 
         <Link href="/login">
           <div className="flex items-center cursor-pointer" title="Log out">
-            {/* <img src="" alt="" /> */}
+            <Image
+              src={user?.profilePic}
+              alt=""
+              width={30}
+              height={30}
+              className="rounded-xl"
+            ></Image>
             <div className="text-[16px] font-bold text-black mx-[10px]">
               Log Out ({user.name})
             </div>
@@ -237,7 +244,13 @@ function Sidebar() {
 
             <Link href="/login">
               <div className="flex items-center cursor-pointer" title="Log out">
-                {/* <img src={user?.profilePic} alt="" /> */}
+                <Image
+                  src={user?.profilePic}
+                  alt=""
+                  width={30}
+                  height={30}
+                  className="rounded-xl"
+                ></Image>
                 <div className="text-[13px] font-bold text-black mx-[10px]">
                   Log Out ({user.name})
                 </div>
