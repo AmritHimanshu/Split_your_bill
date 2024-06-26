@@ -7,7 +7,7 @@ function Sidebar() {
   const BASE_URL = "http://localhost:5000";
 
   const router = useRouter();
-  const { username } = router.query;
+  const { username,billname } = router.query;
 
   const [isTrue, setIsTrue] = useState(false);
   const [user, setUser] = useState<any>({});
@@ -74,20 +74,15 @@ function Sidebar() {
               </div>
             </Link>
 
-            <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[20px] text-green-600 font-bold flex align-center justify-between cursor-pointer">
-              <div className="">Jammu & Kashmir</div>
-              {/* <div className="hover:text-[rgb(255,255,216)]">Jammu & Kashmir</div> */}
-              {/* <div className="text-[rgb(185,185,185)]">{new Date().toLocaleDateString()}</div> */}
-            </div>
-
-            <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[16px] text-gray-700 flex align-center justify-between cursor-pointer hover:text-black">
-              <div className="">Jammu & Kashmir</div>
-              {/* <div className="">{new Date().toLocaleDateString()}</div> */}
-            </div>
-            <div className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[16px] text-gray-700 flex align-center justify-between cursor-pointer hover:text-black">
-              <div className="">Jammu & Kashmir</div>
-              {/* <div className="">{new Date().toLocaleDateString()}</div> */}
-            </div>
+            {bills?.map((bill:any, index) => (
+              <Link href={`/${username}/${bill.title}`} key={index}>
+                <div key={index} className="border-b-[1px] border-[rgb(141,141,141)] text-center py-[5px] px-[10px] my-[10px] text-[20px] text-green-600 font-bold flex align-center justify-between cursor-pointer">
+                <div className="">{bill.title}</div>
+                {/* <div className="hover:text-[rgb(255,255,216)]">Jammu & Kashmir</div> */}
+                {/* <div className="text-[rgb(185,185,185)]">{new Date().toLocaleDateString()}</div> */}
+              </div>
+              </Link>
+            ))}
           </div>
         </div>
 
