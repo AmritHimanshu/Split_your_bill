@@ -56,7 +56,7 @@ function BillPage() {
       id && getSingleBill();
     }
     getData();
-  }, [router, id]);
+  }, [router, id, BASE_URL]);
 
   const addAmount = async () => {
     if (!selectedMember || !inputAmount) {

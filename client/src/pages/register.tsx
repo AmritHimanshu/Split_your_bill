@@ -26,7 +26,7 @@ function Register() {
     }
 
     logOut();
-  },[]);
+  },[BASE_URL]);
 
   const [visible, setVisible] = useState(false);
   const [cvisible, setCVisible] = useState(false);

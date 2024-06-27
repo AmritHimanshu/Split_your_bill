@@ -62,7 +62,7 @@ function Sidebar() {
 
     getData();
     getBills();
-  }, [router]);
+  }, [router,BASE_URL]);
 
   const handleBillOnDelete = async (id: String) => {
     setDelId("");

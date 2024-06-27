@@ -33,7 +33,7 @@ function AddNewBill() {
     };
 
     getData();
-  }, [router]);
+  }, [router,BASE_URL]);
 
   const [title, setTitle] = useState("");
   const [noOfInputs, setNoOfInputs] = useState([

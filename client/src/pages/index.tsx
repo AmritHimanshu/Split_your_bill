@@ -23,7 +23,7 @@ export default function Home() {
         const data = await res.json();
         if (data) {
           router.push(`/${[data.name]}`);
-          console.log(data);
+          // console.log(data);
         }
       } catch (error) {
         console.log(error);
@@ -32,7 +32,7 @@ export default function Home() {
     };
 
     getData();
-  }, [router]);
+  }, [router,BASE_URL]);
 
   return <div className="flex h-[100vh] bg-green-600"></div>;
 }

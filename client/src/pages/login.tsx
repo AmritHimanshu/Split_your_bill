@@ -7,7 +7,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 function Login() {
   // const BASE_URL = "http://localhost:5000";
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-  console.log(BASE_URL)
 
   const router = useRouter();
 
@@ -31,7 +30,7 @@ function Login() {
     };
 
     logOut();
-  }, []);
+  }, [BASE_URL]);
 
   const loginUser = async (e: any) => {
     e.preventDefault();

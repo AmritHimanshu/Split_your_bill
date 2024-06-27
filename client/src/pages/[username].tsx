@@ -31,7 +31,7 @@ export default function Home() {
     };
 
     getData();
-  }, [router]);
+  }, [router,BASE_URL]);
 
   return (
     <div className="flex h-[100vh] bg-green-600">
