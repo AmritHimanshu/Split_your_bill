@@ -8,7 +8,7 @@ import Image from "next/image";
 
 function Sidebar() {
   // const BASE_URL = "http://localhost:5000";
-  const BASE_URL = "https://split-your-bill-api.vercel.app";
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const router = useRouter();
   const { username, billname } = router.query;

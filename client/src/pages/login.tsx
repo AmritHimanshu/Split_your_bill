@@ -6,30 +6,31 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function Login() {
   // const BASE_URL = "http://localhost:5000";
-  const BASE_URL = "https://split-your-bill-api.vercel.app";
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
   const router = useRouter();
 
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(()=>{
-    const logOut = async ()=>{
+  useEffect(() => {
+    const logOut = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/logout`,{
-          method:'GET',
-          headers:{
-            'Content-Type':'application/json'
+        const res = await fetch(`${BASE_URL}/logout`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
           },
-          credentials:'include'
+          credentials: "include",
         });
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     logOut();
-  },[]);
+  }, []);
 
   const loginUser = async (e: any) => {
     e.preventDefault();
@@ -70,7 +71,10 @@ function Login() {
         <div>
           <form onSubmit={loginUser}>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="email" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="email"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Email
               </label>
               <div>
@@ -86,7 +90,10 @@ function Login() {
               </div>
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="password" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="password"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Password
               </label>
               <div className="flex items-center justify-between">
@@ -101,12 +108,12 @@ function Login() {
                 />
                 {visible ? (
                   <VisibilityIcon
-                    style={{ cursor: "pointer", fontSize:"20px" }}
+                    style={{ cursor: "pointer", fontSize: "20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 ) : (
                   <VisibilityOffIcon
-                    style={{ cursor: "pointer", fontSize:"20px" }}
+                    style={{ cursor: "pointer", fontSize: "20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 )}

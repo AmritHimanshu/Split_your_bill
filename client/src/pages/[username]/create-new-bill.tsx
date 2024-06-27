@@ -6,7 +6,7 @@ import Sidebar from "../components/Sidebar";
 
 function AddNewBill() {
   // const BASE_URL = "http://localhost:5000";
-  const BASE_URL = "https://split-your-bill-api.vercel.app";
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const router = useRouter();
   const { username } = router.query;
