@@ -18,3 +18,73 @@ Follow these steps to set up the project locally:
 
    ```bash
    git clone https://github.com/yourusername/split-your-bill.git
+
+## Navigate to the Project Directory
+
+After cloning the repository, change to the project directory using the following command:
+
+```bash
+cd split-your-bill
+
+## Install Dependencies
+
+Ensure you have `Node.js` and `npm` or `yarn` installed. Then run:
+
+```bash
+npm install
+
+## Set Up Environment Variables
+
+Create a `.env` file in the root directory of the project and add the following environment variables:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+## Run the Application
+
+To start the application, use one of the following commands:
+
+```bash
+npm start
+
+## Usage
+
+1. **Sign In / Sign Up**
+
+   Navigate to the sign-in page and create an account or log in with your existing credentials.
+
+2. **Create a Trip**
+
+   After logging in, you can create a new trip from the dashboard. Provide the trip name and description.
+
+3. **Add Members**
+
+   Within each trip, you can add members by their email addresses. Members will receive invitations to join the trip.
+
+4. **Add Expenses**
+
+   When an expense is incurred, add it to the trip. Specify the amount and the member who paid. The amount will be equally divided among all members.
+
+5. **Adjust Payments**
+
+   If a member pays for someone else, you can adjust their balance by subtracting the amount they paid. The application will update the balances accordingly.
+
+## Technologies Used
+
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JWT (JSON Web Tokens)
+
+## Contributing
+
+Contributions are welcome! To contribute to the project, please follow these steps:
+
+1. **Fork the repository**: Create your own copy of the repository by clicking the "Fork" button on GitHub.
+
+2. **Create a new branch**: Create a new branch for your feature or bug fix.
+
+   ```bash
+   git checkout -b your-feature-branch
+
