@@ -88,3 +88,12 @@ Contributions are welcome! To contribute to the project, please follow these ste
    ```bash
    git checkout -b your-feature-branch
 
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or feedback, please reach out to [your-email@example.com](mailto:your-email@example.com).
+
+
