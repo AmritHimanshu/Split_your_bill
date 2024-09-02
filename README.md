@@ -1,3 +1,5 @@
+### https://split-your-bill.vercel.app/
+
 # Split Your Bill
 
 A web application that helps users manage and split expenses among group members for various trips or events. Users can sign in, create trips, add members, and track expenses. The app calculates the share of each member and allows adjustments for payments made to others.
