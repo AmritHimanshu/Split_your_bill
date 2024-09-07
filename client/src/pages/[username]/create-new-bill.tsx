@@ -3,12 +3,20 @@ import { useRouter } from "next/router";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Sidebar from "../components/Sidebar";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function AddNewBill() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const router = useRouter();
   const { username } = router.query;
+
+  const [title, setTitle] = useState("");
+  const [noOfInputs, setNoOfInputs] = useState([
+    { memberName: "" },
+    { memberName: "" },
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,13 +40,7 @@ function AddNewBill() {
     };
 
     getData();
-  }, [router,BASE_URL]);
-
-  const [title, setTitle] = useState("");
-  const [noOfInputs, setNoOfInputs] = useState([
-    { memberName: "" },
-    { memberName: "" },
-  ]);
+  }, [router, BASE_URL]);
 
   const handleDeleteInput = (index: number) => {
     const newArray = [...noOfInputs];
@@ -70,6 +72,7 @@ function AddNewBill() {
         return window.alert(`Member ${index + 1} is empty`);
     });
 
+    setIsLoading(true);
     const memberNames = noOfInputs.map((input) => input.memberName);
 
     try {
@@ -89,13 +92,18 @@ function AddNewBill() {
         router.push("/login");
       }
       const data = await res.json();
-      if (res.status === 206 || res.status === 503) return window.alert(`${data.error}`);
+      if (res.status === 206 || res.status === 503) {
+        setIsLoading(false);
+        return window.alert(`${data.error}`);
+      }
       if (res.status === 200) {
-        window.alert(`${data.message}`);
-        router.push(`/${username}`);
+        setIsLoading(false);
+        window.alert("Bill created");
+        router.push(`/${username}/${data.title}/${data._id}`);
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
       window.alert("Internal server error");
     }
   };
@@ -149,7 +157,7 @@ function AddNewBill() {
 
                     {index >= 2 && (
                       <DeleteIcon
-                        style={{ cursor: "pointer", fontSize:"20px" }}
+                        style={{ cursor: "pointer", fontSize: "20px" }}
                         onClick={() => handleDeleteInput(index)}
                       />
                     )}
@@ -172,7 +180,13 @@ function AddNewBill() {
               className="text-[14px] md:text-[16px] p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
               onClick={handleOnCreate}
             >
-              Create
+              {isLoading ? (
+                <div>
+                  <RestartAltIcon className="animate-spin" /> Creating
+                </div>
+              ) : (
+                <div>Create</div>
+              )}
             </button>
           </form>
         </div>

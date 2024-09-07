@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Image from "next/image";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function Sidebar() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -15,7 +16,8 @@ function Sidebar() {
   const [isTrue, setIsTrue] = useState(false);
   const [user, setUser] = useState<any>({});
   const [bills, setBills] = useState([]);
-  const [delId, setDelId] = useState("");
+  const [delId, setDelId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -61,10 +63,11 @@ function Sidebar() {
 
     getData();
     getBills();
-  }, [router,BASE_URL]);
+  }, [router, BASE_URL]);
 
   const handleBillOnDelete = async (id: String) => {
-    setDelId("");
+    setDelId(`${id}`);
+    setIsLoading(true);
     try {
       const res = await fetch(`${BASE_URL}/delete/${id}`, {
         method: "DELETE",
@@ -77,14 +80,19 @@ function Sidebar() {
       if (res.status === 401) router.push("/login");
       const data = await res.json();
       if (res.status !== 200) {
+        setIsLoading(false);
         return window.alert(`${data.error}`);
       }
       if (res.status === 200) {
+        setIsLoading(false);
         window.alert("Successfully deleted");
         router.push(`/${username}`);
+        // window.location.reload();
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      window.alert(error);
     }
   };
 
@@ -108,43 +116,43 @@ function Sidebar() {
                 key={index}
                 className="flex items-center border-b-[1px] border-[rgb(141,141,141)] relative"
               >
-                <MoreVertIcon
-                  className="hover:bg-gray-300/40 rounded-2xl p-1"
-                  style={{
-                    fontSize: "30px",
-                    cursor: "pointer",
-                    color: "black",
-                  }}
-                  onClick={() =>
-                    delId !== bill._id ? setDelId(bill._id) : setDelId("")
-                  }
-                />
-
-                {delId === bill._id && (
-                  <div
-                    className="absolute bg-white p-2 px-3 bottom-[-21px] rounded-sm shadow-md hover:cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleBillOnDelete(bill._id)}
-                  >
-                    Delete
+                {isLoading && bill._id === delId ? (
+                  <div className="px-[5px] py-[10px]">
+                    <RestartAltIcon className="animate-spin" />{" "}
+                    <span className=" text-green-600 font-bold text-[18px]">
+                      Deleting
+                    </span>
                   </div>
+                ) : (
+                  <>
+                    <DeleteRoundedIcon
+                      className="hover:bg-gray-300/40 rounded-2xl p-1"
+                      style={{
+                        fontSize: "30px",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                      onClick={() => handleBillOnDelete(bill._id)}
+                    />
+                    <Link
+                      href={`/${username}/${bill.title}/${bill._id}`}
+                      className="w-full ml-5 my-[10px]"
+                    >
+                      <div
+                        className={`text-center px-[5px] py-[10px] hover:text-green-700 ${
+                          bill.title === billname
+                            ? "text-green-600 font-bold text-[18px]"
+                            : "text-[14px] font-bold text-gray-500"
+                        } flex items-center justify-between cursor-pointer`}
+                      >
+                        <div className="">{bill.title}</div>
+                        {bill.title === billname && (
+                          <ArrowRightIcon style={{ fontSize: "35px" }} />
+                        )}
+                      </div>
+                    </Link>
+                  </>
                 )}
-                <Link
-                  href={`/${username}/${bill.title}/${bill._id}`}
-                  className="w-full ml-5 my-[10px]"
-                >
-                  <div
-                    className={`text-center px-[5px] py-[10px] hover:text-green-700 ${
-                      bill.title === billname
-                        ? "text-green-600 font-bold text-[18px]"
-                        : "text-[14px] font-bold text-gray-500"
-                    } flex items-center justify-between cursor-pointer`}
-                  >
-                    <div className="">{bill.title}</div>
-                    {bill.title === billname && (
-                      <ArrowRightIcon style={{ fontSize: "35px" }} />
-                    )}
-                  </div>
-                </Link>
               </div>
             ))}
           </div>
@@ -201,42 +209,43 @@ function Sidebar() {
                     key={index}
                     className="flex items-center border-b-[1px] border-[rgb(141,141,141)] relative"
                   >
-                    <MoreVertIcon
-                      className="hover:bg-gray-300/40 rounded-2xl p-1"
-                      style={{
-                        fontSize: "30px",
-                        cursor: "pointer",
-                        color: "black",
-                      }}
-                      onClick={() =>
-                        delId !== bill._id ? setDelId(bill._id) : setDelId("")
-                      }
-                    />
-                    {delId === bill._id && (
-                      <div
-                        className="absolute z-10 bg-white text-black p-2 px-3 bottom-[-21px] rounded-sm shadow-md hover:cursor-pointer hover:bg-gray-100"
-                        onClick={() => handleBillOnDelete(bill._id)}
-                      >
-                        Delete
+                    {isLoading && bill._id === delId ? (
+                      <div>
+                        <RestartAltIcon className="animate-spin" />{" "}
+                        <span className="px-[5px] py-[5px] text-green-600 font-bold text-[18px]">
+                          Deleting
+                        </span>
                       </div>
+                    ) : (
+                      <>
+                        <DeleteRoundedIcon
+                          className="hover:bg-gray-300/40 rounded-2xl p-1"
+                          style={{
+                            fontSize: "30px",
+                            cursor: "pointer",
+                            color: "black",
+                          }}
+                          onClick={() => handleBillOnDelete(bill._id)}
+                        />
+                        <Link
+                          href={`/${username}/${bill.title}/${bill._id}`}
+                          className="w-full ml-5 my-[5px]"
+                        >
+                          <div
+                            className={`text-center px-[5px] py-[5px] hover:text-green-700 ${
+                              bill.title === billname
+                                ? "text-green-600 font-bold text-[20px]"
+                                : "text-[14px] font-bold text-gray-500"
+                            } flex items-center justify-between cursor-pointer`}
+                          >
+                            <div className="">{bill.title}</div>
+                            {bill.title === billname && (
+                              <ArrowRightIcon style={{ fontSize: "30px" }} />
+                            )}
+                          </div>
+                        </Link>
+                      </>
                     )}
-                    <Link
-                      href={`/${username}/${bill.title}/${bill._id}`}
-                      className="w-full ml-5 my-[5px]"
-                    >
-                      <div
-                        className={`text-center px-[5px] py-[5px] hover:text-green-700 ${
-                          bill.title === billname
-                            ? "text-green-600 font-bold text-[20px]"
-                            : "text-[14px] font-bold text-gray-500"
-                        } flex items-center justify-between cursor-pointer`}
-                      >
-                        <div className="">{bill.title}</div>
-                        {bill.title === billname && (
-                          <ArrowRightIcon style={{ fontSize: "30px" }} />
-                        )}
-                      </div>
-                    </Link>
                   </div>
                 ))}
               </div>
