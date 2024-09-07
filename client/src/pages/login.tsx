@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function Login() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -12,6 +13,7 @@ function Login() {
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const logOut = async () => {
@@ -36,6 +38,7 @@ function Login() {
     if (!email || !password) {
       return window.alert("Fill all the fields");
     }
+    setIsLoading(true);
     try {
       const res = await fetch(`${BASE_URL}/login`, {
         method: "POST",
@@ -51,13 +54,17 @@ function Login() {
 
       const data = await res.json();
       if (res.status !== 200) {
+        setIsLoading(false);
         return window.alert(`${data.error}`);
       } else {
+        setIsLoading(false);
         window.alert("Successfully registered");
         router.push("/");
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      window.alert(error);
     }
   };
 
@@ -120,7 +127,13 @@ function Login() {
             </div>
 
             <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center text-white bg-[rgb(0,144,72)] font-bold rounded-md cursor-pointer">
-              Login
+              {isLoading ? (
+                <div>
+                  <RestartAltIcon className="animate-spin" /> Logging
+                </div>
+              ) : (
+                <div>Login</div>
+              )}
             </button>
           </form>
 

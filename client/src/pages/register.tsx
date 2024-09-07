@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function Register() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -29,6 +30,7 @@ function Register() {
 
   const [visible, setVisible] = useState(false);
   const [cvisible, setCVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [inputData, setInputData] = useState({
     name: "",
@@ -61,6 +63,7 @@ function Register() {
     }
 
     try {
+      setIsLoading(true);
       const res = await fetch(`${BASE_URL}/register`, {
         method: "POST",
         headers: {
@@ -77,13 +80,17 @@ function Register() {
 
       const data = await res.json();
       if (res.status !== 200) {
-        return window.alert(`${data.error}`);
+        setIsLoading(false);
+        window.alert(`${data.error}`);
       } else {
+        setIsLoading(false);
         window.alert(`${data.message}`);
         router.push("/login");
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      window.alert(error);
     }
   };
 
@@ -193,7 +200,13 @@ function Register() {
             </div>
 
             <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 rounded-md pointer">
-              Register
+            {isLoading ? (
+                <div>
+                  <RestartAltIcon className="animate-spin" /> Registering
+                </div>
+              ) : (
+                <div>Register</div>
+              )}
             </button>
           </form>
 
