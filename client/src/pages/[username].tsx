@@ -21,7 +21,7 @@ export default function Home() {
         if(res.status === 401) router.push('/login');
         const data = await res.json();
         if (data) {
-          console.log(data);
+          // console.log(data);
         }
       } catch (error) {
         console.log(error);
