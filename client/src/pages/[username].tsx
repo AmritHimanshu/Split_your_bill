@@ -3,7 +3,6 @@ import Sidebar from "./components/Sidebar";
 import { useEffect } from "react";
 
 export default function Home() {
-  // const BASE_URL = "http://localhost:5000";
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const router = useRouter();
