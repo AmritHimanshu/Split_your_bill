@@ -89,7 +89,7 @@ router.post("/create-new-bill", authenticate, async (req: any, res) => {
     });
 
     const savedBill = await newBill.save();
-    res.status(200).json({ message: "Bill created" });
+    res.status(200).json(savedBill);
   } catch (error) {
     console.log("/created-new-bill " + error);
     res.status(503).json({ error: "Internal Server Error" });
