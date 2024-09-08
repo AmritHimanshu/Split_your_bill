@@ -106,7 +106,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px] border-r-[1px] border-neutral-400">
+      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px]">
         <div className="">
           <div>
             <Link href={`/${username}/create-new-bill`}>
