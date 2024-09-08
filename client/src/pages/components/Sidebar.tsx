@@ -106,16 +106,12 @@ function Sidebar() {
 
   return (
     <>
-      <div className="hidden lg:flex p-[15px] w-[25%] h-[100vh] flex flex-col justify-between bg-white shadow-xl">
+      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px] border-r-[1px] border-neutral-400">
         <div className="">
-          <div className="p-[5px] my-[10px] text-[25px] bg-green-700 font-bold text-white text-center cursor-default">
-            Split - your - bills
-          </div>
-
           <div>
             <Link href={`/${username}/create-new-bill`}>
-              <div className="w-[100%] h-[50px] text-black p-[5px] mt-[50px] mb-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">
-                + Add New
+              <div className="w-[100%] h-[50px] text-black p-[5px] my-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] border-black duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">
+                + Create New
               </div>
             </Link>
 
@@ -128,7 +124,7 @@ function Sidebar() {
             {bills?.map((bill: any, index) => (
               <div
                 key={index}
-                className="flex items-center border-b-[1px] border-[rgb(141,141,141)] relative"
+                className="flex items-center border-b-[1px border-[rgb(141,141,141)] relative"
               >
                 {isLoading && bill._id === delId ? (
                   <div className="px-[5px] py-[10px]">
@@ -150,13 +146,12 @@ function Sidebar() {
                     />
                     <Link
                       href={`/${username}/${bill.title}/${bill._id}`}
-                      className="w-full ml-5 my-[10px]"
+                      className="w-full my-[3px]"
                     >
                       <div
-                        className={`text-center px-[5px] py-[10px] hover:text-green-700 ${
-                          bill.title === billname
-                            ? "text-green-600 font-bold text-[18px]"
-                            : "text-[14px] font-bold text-gray-500"
+                        className={`text-center px-5 py-[10px] text-[14px] rounded-md hover:bg-neutral-500 hover:bg-opacity-10 ${
+                          bill.title === billname ?
+                          "font-bold text-[16px] bg-neutral-500 bg-opacity-10" : "font-[500]"
                         } flex items-center justify-between cursor-pointer`}
                       >
                         <div className="">{bill.title}</div>
@@ -196,19 +191,15 @@ function Sidebar() {
         {isTrue && (
           <div className="bg-white p-[20px] w-[100vw] h-[96vh] text-white flex flex-col justify-between">
             <div>
-              <div className="p-[5px] my-[10px] text-[18px] bg-green-700 font-bold text-white text-center cursor-default">
-                Split - your - bills
-              </div>
-
               <div>
                 <Link href={`/${username}/create-new-bill`}>
                   <div
-                    className="w-[100%] h-[40px] text-black p-[5px] mt-[30px] mb-[20px] text-[15px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600"
+                    className="w-[100%] h-[40px] text-black p-[5px] mt-[30px] mb-[20px] text-[15px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] border-black duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600"
                     onClick={() => {
                       setIsTrue(!isTrue);
                     }}
                   >
-                    + Add New
+                    + Create New
                   </div>
                 </Link>
 
@@ -221,7 +212,7 @@ function Sidebar() {
                 {bills?.map((bill: any, index) => (
                   <div
                     key={index}
-                    className="flex items-center border-b-[1px] border-[rgb(141,141,141)] relative"
+                    className="flex items-center border-b-[1px border-[rgb(141,141,141)] relative"
                   >
                     {isLoading && bill._id === delId ? (
                       <div>
@@ -243,13 +234,13 @@ function Sidebar() {
                         />
                         <Link
                           href={`/${username}/${bill.title}/${bill._id}`}
-                          className="w-full ml-5 my-[5px]"
+                          className="w-full my-[5px]"
                         >
                           <div
-                            className={`text-center px-[5px] py-[5px] hover:text-green-700 ${
+                            className={`text-center px-5 py-[5px] rounded-md hover:bg-neutral-500 hover:bg-opacity-10 ${
                               bill.title === billname
-                                ? "text-green-600 font-bold text-[20px]"
-                                : "text-[14px] font-bold text-gray-500"
+                                ? "font-bold text-[20px]"
+                                : "text-[14px] font-[500]"
                             } flex items-center justify-between cursor-pointer`}
                           >
                             <div className="">{bill.title}</div>

@@ -95,7 +95,7 @@ function Register() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-600">
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-100 bg-opacity-25">
       <div className="min-w-[345px] md:w-[500px] p-[15px] md:p-[20px] bg-white m-auto rounded-md shadow-lg">
         <div className="my-[10px] text-center text-[18px] md:text-[22px] text-green-600">
           Register
@@ -112,7 +112,7 @@ function Register() {
                 id="name"
                 value={inputData.name}
                 placeholder="Enter your name"
-                className="outline-0 w-full text-[14px] md:text-[18px]"
+                className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
@@ -126,7 +126,7 @@ function Register() {
                 id="email"
                 value={inputData.email}
                 placeholder="Enter your email"
-                className="outline-0 w-full text-[14px] md:text-[18px]"
+                className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
@@ -140,7 +140,7 @@ function Register() {
                 id="phone"
                 value={inputData.phone}
                 placeholder="Enter your phone number"
-                className="outline-0 w-full text-[14px] md:text-[18px]"
+                className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
@@ -155,7 +155,7 @@ function Register() {
                   id="password"
                   value={inputData.password}
                   placeholder="Enter your password"
-                  className="outline-0 w-full text-[14px] md:text-[18px]"
+                  className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                   onChange={(e) => handleOnChange(e)}
                 />
                 {visible ? (
@@ -182,7 +182,7 @@ function Register() {
                   id="cpassword"
                   value={inputData.cpassword}
                   placeholder="Re-enter your password"
-                  className="outline-0 w-full text-[14px] md:text-[18px]"
+                  className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                   onChange={(e) => handleOnChange(e)}
                 />
                 {cvisible ? (

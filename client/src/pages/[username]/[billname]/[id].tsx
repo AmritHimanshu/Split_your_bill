@@ -147,20 +147,20 @@ function BillPage() {
   };
 
   return (
-    <div className="flex h-[100vh] bg-green-600">
+    <div className="flex h-[100vh] bg-green-100 bg-opacity-25">
       <Sidebar />
-      <div className="w-[100%] lg:w-[75%] py-[20px] flex overflow-y-auto">
+      <div className="w-[100%] lg:w-[75% py-[20px] flex overflow-y-auto">
         <div className="py-[10px] md:px-[20px] w-[100%]">
           <div className="px-[10px] py-[5px] flex items-center justify-between">
-            <div>
-              <div className="text-[20px] md:text-[27px] font-bold text-white">
+            <div className="space-y-2">
+              <div className="text-[20px] md:text-[27px] font-bold text-black">
                 {billData?.title}
               </div>
-              <div className="text-[11px] md:text-[14px] text-white">
+              <div className="text-[11px] md:text-[14px] text-black">
                 {billData &&
                   new Date(billData?.date).toLocaleDateString(undefined, {
                     year: "numeric",
-                    month: "long",
+                    month: "short",
                     day: "numeric",
                   })}
               </div>
@@ -183,32 +183,33 @@ function BillPage() {
               </div>
             )}
           </div>
-          <hr className="border-[1px] border-white" />
+          <hr className="border-[1px] border-black" />
 
-          <div className="mt-[10px] h-[93%] overflow-y-auto flex items-center justify-evenly flex-wrap relative">
+          <div className="mt-[15px] h-[92%] overflow-y-auto flex items-center justify-evenly flex-wrap relative">
             {billData?.members &&
               billData?.members.map((member: any, index: any) => (
                 <div
                   key={index}
-                  className="bg-white w-[350px] h-max m-[10px] py-[5px] px-[10px] rounded-md shadow-xl"
+                  className="bg-white w-[360px] h-max mx-5 my-7 p-5 rounded-md shadow-xl"
                 >
-                  <div className="text-[16px] md:text-[19px] font-bold text-[rgb(0,144,72)]">
+                  <div className="text-[16px] md:text-[19px] text-center font-bold text-[rgb(0,144,72)] mb-2">
                     {member.name}
                   </div>
-                  <div className="flex items-center justify-between text-gray-700 text-sm md:text-md">
-                    <div>Total spent</div>
+                  <div className="flex items-center justify-between text-gray-700 text-sm md:text-md font-[600]">
+                    <div>Total expenses</div>
                     <div>₹{member.totalSpends}</div>
                   </div>
-                  <hr className="my-1 border-[1px] border-[rgb(116,116,116)]" />
+                  <hr className="my-2 border-[1px] border-[rgb(116,116,116)]" />
                   <div className="font-bold mb-[3px] text-sm md:text-md text-[rgb(76,76,76)]">
                     Pay to
                   </div>
                   {billData?.members.map(
                     (mbr: any, idx: any) =>
                       idx !== index && (
+                        <>
                         <div
                           key={idx}
-                          className="flex items-center justify-between my-[5px] border-b-[1px] border-green-600 text-sm"
+                          className="flex items-center justify-between my-4 text-sm"
                         >
                           <div>{mbr?.name}</div>
                           <div className="border-b-[0px]">
@@ -228,6 +229,8 @@ function BillPage() {
                             )}
                           </div>
                         </div>
+                        <hr className="border-b-[1px] border-green-600"/>
+                        </>
                       )
                   )}
                 </div>
@@ -286,7 +289,7 @@ function BillPage() {
                     </div>
 
                     <button
-                      className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
+                      className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-black font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
                       onClick={addAmount}
                     >
                       {isLoading ? (
@@ -355,7 +358,7 @@ function BillPage() {
                     </div>
 
                     <button
-                      className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
+                      className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-black font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
                       onClick={subAmount}
                     >
                       {isLoading ? (
