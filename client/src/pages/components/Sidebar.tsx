@@ -16,8 +16,9 @@ function Sidebar() {
   const [isTrue, setIsTrue] = useState(false);
   const [user, setUser] = useState<any>({});
   const [bills, setBills] = useState([]);
-  const [delId, setDelId] = useState('');
+  const [delId, setDelId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetcing, setIsFetching] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -40,6 +41,7 @@ function Sidebar() {
     };
 
     const getBills = async () => {
+      setIsFetching(true);
       try {
         const res = await fetch(`${BASE_URL}/getbills`, {
           method: "GET",
@@ -51,12 +53,17 @@ function Sidebar() {
 
         if (res.status === 401) router.push("/login");
         const data = await res.json();
-        if (res.status === 503) return window.alert(`${data.error}`);
+        if (res.status === 503) {
+          setIsFetching(false);
+          return window.alert(`${data.error}`);
+        }
         if (res.status === 200) {
           setBills(data);
+          setIsFetching(false);
         }
       } catch (error) {
         console.log(error);
+        setIsFetching(false);
         window.alert("Internal server error");
       }
     };
@@ -110,6 +117,12 @@ function Sidebar() {
                 + Add New
               </div>
             </Link>
+
+            {isFetcing && (
+              <div>
+                <RestartAltIcon className="animate-spin" /> Fetching data
+              </div>
+            )}
 
             {bills?.map((bill: any, index) => (
               <div
