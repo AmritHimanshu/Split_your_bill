@@ -99,7 +99,6 @@ function AddNewBill() {
       if (res.status === 200) {
         setIsLoading(false);
         window.alert("Bill created");
-        console.log(data);
         router.push(`/${username}/${data.title}/${data._id}`);
       }
     } catch (error) {
