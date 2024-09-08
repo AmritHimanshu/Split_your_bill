@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Sidebar from "../../components/Sidebar";
 import CloseIcon from "@mui/icons-material/Close";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function BillPage() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -14,6 +15,7 @@ function BillPage() {
   const [selectedMember, setSelectedMember] = useState("");
   const [inputAmount, setInputAmount] = useState("");
   const [billData, setBillData] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -65,7 +67,7 @@ function BillPage() {
       setInputAmount("");
       return window.alert("Enter the number");
     }
-
+    setIsLoading(true);
     try {
       const res = await fetch(`${BASE_URL}/addAmount/${id}`, {
         method: "PUT",
@@ -79,17 +81,24 @@ function BillPage() {
         }),
       });
 
-      if (res.status === 401) router.push("/login");
+      if (res.status === 401) {
+        setIsLoading(false);
+        router.push("/login");
+      }
       const data = await res.json();
       if (res.status !== 200) {
+        setIsLoading(false);
         return window.alert(`${data.error}`);
       } else {
         setBillData(data);
         setInputAmount("");
         setIsAddTrue(false);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      window.alert(error);
     }
   };
 
@@ -102,6 +111,7 @@ function BillPage() {
       return window.alert("Enter the number");
     }
 
+    setIsLoading(true);
     try {
       const res = await fetch(`${BASE_URL}/subAmount/${id}`, {
         method: "PUT",
@@ -115,17 +125,24 @@ function BillPage() {
         }),
       });
 
-      if (res.status === 401) router.push("/login");
+      if (res.status === 401) {
+        setIsLoading(false);
+        router.push("/login");
+      }
       const data = await res.json();
       if (res.status !== 200) {
+        setIsLoading(false);
         return window.alert(`${data.error}`);
       } else {
         setBillData(data);
         setInputAmount("");
         setIsSubTrue(false);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      window.alert(error);
     }
   };
 
@@ -220,10 +237,12 @@ function BillPage() {
               <div className="fixed h-[90%] w-[100%] lg:w-[75%] bg-green-600 flex items-center justify-center">
                 <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
                   <div className="flex items-center justify-between p-[2px]">
-                    <div className="text-[15px] md:text-[19px] font-bold">Add Spends</div>
+                    <div className="text-[15px] md:text-[19px] font-bold">
+                      Add Spends
+                    </div>
                     <div>
                       <CloseIcon
-                        style={{ cursor: "pointer", fontSize:"20px" }}
+                        style={{ cursor: "pointer", fontSize: "20px" }}
                         onClick={() => setIsAddTrue(!isAddTrue)}
                       />
                     </div>
@@ -270,7 +289,13 @@ function BillPage() {
                       className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
                       onClick={addAmount}
                     >
-                      Add
+                      {isLoading ? (
+                        <div>
+                          <RestartAltIcon className="animate-spin" /> Adding
+                        </div>
+                      ) : (
+                        <div>Add</div>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -281,17 +306,19 @@ function BillPage() {
               <div className="fixed h-[90%] w-[100%] lg:w-[75%] bg-green-600 flex items-center justify-center">
                 <div className="w-[400px] h-max bg-white p-[10px] shadow-xl rounded-md">
                   <div className="flex items-center justify-between p-[2px]">
-                  <div className="text-[15px] md:text-[19px] font-bold">Substract Spends</div>
+                    <div className="text-[15px] md:text-[19px] font-bold">
+                      Substract Spends
+                    </div>
                     <div>
                       <CloseIcon
-                        style={{ cursor: "pointer", fontSize:"20px" }}
+                        style={{ cursor: "pointer", fontSize: "20px" }}
                         onClick={() => setIsSubTrue(!isSubTrue)}
                       />
                     </div>
                   </div>
                   <hr className="my-2 border-[1px] border-[rgb(116,116,116)]" />
                   <div>
-                  <div>
+                    <div>
                       <label
                         htmlFor="selectedFruit"
                         className="text-black text-[14px] md:text-[16px]"
@@ -331,7 +358,13 @@ function BillPage() {
                       className="p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 border-white rounded-md cursor-pointer duration-300 hover:scale-105"
                       onClick={subAmount}
                     >
-                      Substract
+                      {isLoading ? (
+                        <div>
+                          <RestartAltIcon className="animate-spin" /> Subtracting
+                        </div>
+                      ) : (
+                        <div>Subtract</div>
+                      )}
                     </button>
                   </div>
                 </div>
