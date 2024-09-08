@@ -69,7 +69,7 @@ function Login() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-600">
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-100 bg-opacity-25">
       <div className="min-w-[345px] md:w-[500px] p-[15px] md:p-[20px] bg-white m-auto rounded-md shadow-lg">
         <div className="my-[10px] text-center text-[18px] md:text-[22px] text-green-600">
           Login
@@ -90,7 +90,7 @@ function Login() {
                   id="email"
                   value={email}
                   placeholder="Enter your email"
-                  className="outline-0 w-full text-[14px] md:text-[18px]"
+                  className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
@@ -109,7 +109,7 @@ function Login() {
                   id="password"
                   value={password}
                   placeholder="Enter your password"
-                  className="outline-0 w-full text-[14px] md:text-[18px]"
+                  className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 {visible ? (
@@ -129,7 +129,7 @@ function Login() {
             <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center text-white bg-[rgb(0,144,72)] font-bold rounded-md cursor-pointer">
               {isLoading ? (
                 <div>
-                  <RestartAltIcon className="animate-spin" /> Logging
+                  <RestartAltIcon className="animate-spin" /> Signing in
                 </div>
               ) : (
                 <div>Login</div>

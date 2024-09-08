@@ -33,5 +33,5 @@ export default function Home() {
     getData();
   }, [router,BASE_URL]);
 
-  return <div className="flex h-[100vh] bg-green-600"></div>;
+  return <div className="flex h-[100vh]"></div>;
 }

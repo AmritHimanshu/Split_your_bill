@@ -109,7 +109,7 @@ function AddNewBill() {
   };
 
   return (
-    <div className="flex h-[100vh] bg-green-600">
+    <div className="flex h-[100vh] bg-green-100 bg-opacity-25">
       <Sidebar />
       <div className="w-[100%] lg:w-[75%] py-[20px] flex overflow-y-auto">
         <div className="bg-white p-[20px] md:p-[25px] rounded-md min-w-[350px] md:w-[500px] m-auto shadow-xl">
