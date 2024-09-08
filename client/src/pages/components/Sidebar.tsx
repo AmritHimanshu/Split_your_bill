@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 function Sidebar() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -173,13 +174,7 @@ function Sidebar() {
 
         <Link href="/login">
           <div className="flex items-center cursor-pointer" title="Log out">
-            <Image
-              src={user?.profilePic}
-              alt=""
-              width={30}
-              height={30}
-              className="rounded-xl"
-            ></Image>
+            <AccountCircleIcon />
             <div className="text-[16px] font-bold text-black mx-[10px]">
               Log Out ({user.name})
             </div>
@@ -216,6 +211,12 @@ function Sidebar() {
                     + Add New
                   </div>
                 </Link>
+
+                {isFetcing && (
+                  <div>
+                    <RestartAltIcon className="animate-spin" /> Fetching data
+                  </div>
+                )}
 
                 {bills?.map((bill: any, index) => (
                   <div
@@ -266,13 +267,7 @@ function Sidebar() {
 
             <Link href="/login">
               <div className="flex items-center cursor-pointer" title="Log out">
-                <Image
-                  src={user?.profilePic}
-                  alt=""
-                  width={30}
-                  height={30}
-                  className="rounded-xl"
-                ></Image>
+                <AccountCircleIcon />
                 <div className="text-[13px] font-bold text-black mx-[10px]">
                   Log Out ({user.name})
                 </div>
