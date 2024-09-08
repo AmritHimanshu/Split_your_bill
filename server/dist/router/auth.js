@@ -107,7 +107,7 @@ router.post("/create-new-bill", authenticate, (req, res) => __awaiter(void 0, vo
         res.status(200).json(savedBill);
     }
     catch (error) {
-        console.log("/created-new-bill " + error);
+        console.log("/created-new-bill  " + error);
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
