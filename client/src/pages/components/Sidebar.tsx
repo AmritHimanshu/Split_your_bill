@@ -178,18 +178,18 @@ function Sidebar() {
       </div>
 
       {/* <---------------------- Phone View Sidebar -----------------------> */}
-      <div className="lg:hidden absolute z-10">
+      <div className="block lg:hidden absolute z-10">
         <MenuIcon
           style={{
             fontSize: "35px",
             cursor: "pointer",
             padding: "5px",
-            color: "white",
+            color: "black",
           }}
           onClick={() => setIsTrue(!isTrue)}
         />
         {isTrue && (
-          <div className="bg-white p-[20px] w-[100vw] h-[96vh] text-white flex flex-col justify-between">
+          <div className="bg-white p-[20px] w-[100vw] h-[calc(100vh-40px)] text-black flex flex-col justify-between">
             <div>
               <div>
                 <Link href={`/${username}/create-new-bill`}>
