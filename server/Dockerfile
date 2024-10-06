@@ -7,6 +7,6 @@ COPY server/package-lock.json .
 
 RUN npm install
 
-COPY . .
+COPY server .
 
 ENTRYPOINT [ "npm", "run", "dev" ]

@@ -7,6 +7,6 @@ COPY client/package-lock.json .
 
 RUN npm install
 
-COPY . .
+COPY client .
 
 ENTRYPOINT [ "npm", "run", "dev" ]
