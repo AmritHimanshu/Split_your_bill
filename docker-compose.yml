@@ -3,20 +3,20 @@ version: '3.8'
 services:
   client:
     build:
-      context: .
-      dockerfile: client/Dockerfile 
+      context: ./client
+      dockerfile: Dockerfile 
     ports:
       - "3000:3000"
     volumes:
-      - ./client:/Split_your_bill/client
+      - ./client:/app
     depends_on:
       - server
 
   server:
     build:
-      context: .
-      dockerfile: server/Dockerfile
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     volumes:
-      - ./server:/Split_your_bill/server
+      - ./server:/app
