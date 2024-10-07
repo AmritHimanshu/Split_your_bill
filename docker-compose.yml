@@ -3,20 +3,22 @@ version: '3.8'
 services:
   client:
     build:
-      context: .
-      dockerfile: client/Dockerfile 
+      context: ./client
+      dockerfile: Dockerfile 
+    image: himanshu582/split-your-bill-client:v1
     ports:
       - "3000:3000"
     volumes:
-      - ./client:/Split_your_bill/client
+      - ./client:/app
     depends_on:
       - server
 
   server:
     build:
-      context: .
-      dockerfile: server/Dockerfile
+      context: ./server
+      dockerfile: Dockerfile
+    image: himanshu582/split-your-bill-server:v1
     ports:
       - "5000:5000"
     volumes:
-      - ./server:/Split_your_bill/server
+      - ./server:/app
