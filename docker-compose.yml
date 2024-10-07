@@ -5,6 +5,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile 
+    image: himanshu582/split-your-bill-client:v1
     ports:
       - "3000:3000"
     volumes:
@@ -16,6 +17,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    image: himanshu582/split-your-bill-server:v1
     ports:
       - "5000:5000"
     volumes:
