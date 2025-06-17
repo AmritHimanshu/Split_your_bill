@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useAppSelector } from "@/store/store";
+import { LOGOUT, REGISTER } from "@/utils/Apis/api";
+import { LOGIN } from "@/utils/Paths/paths";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import Message from "./components/Message";
 
 function Register() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+  const userState = useAppSelector((state) => state.user.userState);
+
   const router = useRouter();
 
-  useEffect(()=>{
-    const logOut = async ()=>{
+  useEffect(() => {
+    const logOut = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/logout`,{
-          method:'GET',
-          headers:{
-            'Content-Type':'application/json'
+        const res = await fetch(`${BASE_URL}/${LOGOUT}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
           },
-          credentials:'include'
+          credentials: "include",
         });
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
-    logOut();
-  },[BASE_URL]);
+    if (userState) logOut();
+  }, [BASE_URL]);
 
   const [visible, setVisible] = useState(false);
   const [cvisible, setCVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   const [inputData, setInputData] = useState({
     name: "",
@@ -40,6 +47,12 @@ function Register() {
     cpassword: "",
   });
 
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [cpasswordError, setCPasswordError] = useState("");
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputData({ ...inputData, [name]: value });
@@ -48,23 +61,59 @@ function Register() {
   const registerUser = async (e: any) => {
     e.preventDefault();
 
+    setNameError("");
+    setEmailError("");
+    setPhoneError("");
+    setPasswordError("");
+    setCPasswordError("");
+    setMessage({ text: "", type: "" });
+
+    let hasError = false;
+
     const regex = /^[0-9]+$/;
+
     const { name, email, phone, password, cpassword } = inputData;
-    if (!name || !email || !phone || !password || !cpassword) {
-      return window.alert("Fill all the fields");
-    } else if (password !== cpassword) {
-      return window.alert("Password doesn't match");
-    } else if (password.length < 6) {
-      return window.alert("Length of password must be of atleast 6");
-    } else if (phone.length < 10) {
-      return window.alert("Invalid Phone number");
-    } else if (!regex.test(phone)) {
-      return window.alert("Invalid Phone number");
+
+    if (!name) {
+      setNameError("Name is required.");
+      hasError = true;
+    }
+    if (!email) {
+      setEmailError("Email is required.");
+      hasError = true;
+    }
+    if (!phone) {
+      setPhoneError("Phone is required.");
+      hasError = true;
+    }
+    if (!password) {
+      setPasswordError("Password is required.");
+      hasError = true;
+    }
+    if (!cpassword) {
+      setCPasswordError("Confirm Password is required.");
+      hasError = true;
+    }
+    if (!regex.test(phone)) {
+      setPhoneError("Invalid Phone number");
+      hasError = true;
+    }
+    if (password.length < 6) {
+      setPasswordError("Length of password must be of atleast 6");
+      hasError = true;
+    }
+    if (password !== cpassword) {
+      setPasswordError("Password doesn't match");
+      setCPasswordError("Password doesn't match");
+      hasError = true;
     }
 
+    if (hasError) return;
+
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
-      const res = await fetch(`${BASE_URL}/register`, {
+      const res = await fetch(`${BASE_URL}/${REGISTER}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,14 +128,16 @@ function Register() {
       });
 
       const data = await res.json();
+
       if (res.status !== 200) {
-        setIsLoading(false);
-        window.alert(`${data.error}`);
-      } else {
-        setIsLoading(false);
-        window.alert(`${data.message}`);
-        router.push("/login");
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
       }
+      
+      setIsLoading(false);
+      window.alert(`${data.message}`);
+      router.push(LOGIN);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -95,7 +146,11 @@ function Register() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-100 bg-opacity-25">
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center bg-green-100 bg-opacity-25 relative">
+      {message.text && message.type && (
+        <Message text={message.text} type={message.type} />
+      )}
+
       <div className="min-w-[345px] md:w-[500px] p-[15px] md:p-[20px] bg-white m-auto rounded-md shadow-lg">
         <div className="my-[10px] text-center text-[18px] md:text-[22px] text-green-600">
           Register
@@ -103,7 +158,10 @@ function Register() {
         <div>
           <form onSubmit={registerUser}>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="name" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="name"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Name
               </label>
               <input
@@ -117,7 +175,10 @@ function Register() {
               />
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="email" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="email"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Email
               </label>
               <input
@@ -131,7 +192,10 @@ function Register() {
               />
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="phone" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="phone"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Phone Number
               </label>
               <input
@@ -145,7 +209,10 @@ function Register() {
               />
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="password" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="password"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Password
               </label>
               <div className="flex items-center">
@@ -160,19 +227,22 @@ function Register() {
                 />
                 {visible ? (
                   <VisibilityIcon
-                    style={{ cursor: "pointer",fontSize:"20px" }}
+                    style={{ cursor: "pointer", fontSize: "20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 ) : (
                   <VisibilityOffIcon
-                    style={{ cursor: "pointer",fontSize:"20px" }}
+                    style={{ cursor: "pointer", fontSize: "20px" }}
                     onClick={() => setVisible(!visible)}
                   />
                 )}
               </div>
             </div>
             <div className="my-[10px] pb-2 space-y-2 border-b-2">
-              <label htmlFor="cpassword" className="text-[14px] md:text-[18px] text-black">
+              <label
+                htmlFor="cpassword"
+                className="text-[14px] md:text-[18px] text-black"
+              >
                 Confirm Password
               </label>
               <div className="flex items-center">
@@ -187,12 +257,12 @@ function Register() {
                 />
                 {cvisible ? (
                   <VisibilityIcon
-                    style={{ cursor: "pointer", fontSize:"20px" }}
+                    style={{ cursor: "pointer", fontSize: "20px" }}
                     onClick={() => setCVisible(!cvisible)}
                   />
                 ) : (
                   <VisibilityOffIcon
-                    style={{ cursor: "pointer", fontSize:"20px" }}
+                    style={{ cursor: "pointer", fontSize: "20px" }}
                     onClick={() => setCVisible(!cvisible)}
                   />
                 )}
@@ -200,7 +270,7 @@ function Register() {
             </div>
 
             <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 rounded-md pointer">
-            {isLoading ? (
+              {isLoading ? (
                 <div>
                   <RestartAltIcon className="animate-spin" /> Registering
                 </div>
@@ -212,7 +282,7 @@ function Register() {
 
           <div className="text-center mt-[10px] mb-[5px] text-[14px] md:text-[16px]">
             <span className="mx-[5px]">Already have an account?</span>
-            <Link href="/login">
+            <Link href={`${LOGIN}`}>
               <span className="mx-[5px] text-green-600 underline">
                 Login here
               </span>

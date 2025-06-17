@@ -11,13 +11,15 @@ require("./db/conn");
 
 app.use(
   cors({
-    // origin: true,
-    origin: "https://split-your-bill.vercel.app",
+    origin: true,
+    // origin: "https://split-your-bill.vercel.app",
     credentials: true,
   })
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(require("./router/auth"));
 
 app.listen(port, () => {

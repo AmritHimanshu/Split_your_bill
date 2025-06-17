@@ -1,36 +1,17 @@
 import { useRouter } from "next/router";
 import Sidebar from "./components/Sidebar";
 import { useEffect } from "react";
+import { useAppSelector } from "@/store/store";
+import { LOGIN } from "@/utils/Paths/paths";
 
 export default function Home() {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
+  const userState = useAppSelector((state) => state.user.userState);
+  
   const router = useRouter();
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if(res.status === 401) router.push('/login');
-        const data = await res.json();
-        if (data) {
-          router.push(`/${data.name}`);
-        }
-      } catch (error) {
-        console.log(error);
-        router.push("/login");
-      }
-    };
-
-    getData();
-  }, [router,BASE_URL]);
+      if (!userState) router.push(LOGIN);
+    }, []);
 
   return <div className="flex h-[100vh]"></div>;
 }

@@ -10,7 +10,7 @@ const { ObjectId } = mongoose.Types;
 const User = require("../model/userSchema");
 const Bill = require("../model/billSchema");
 
-router.post("/register", async (req, res) => {
+router.post("/api/register", async (req, res) => {
   const { name, email, phone, password, cpassword } = req.body;
   const regex = /^[0-9]+$/;
   if (!name || !email || !phone || !password || !cpassword) {
@@ -42,18 +42,21 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(206).json({ error: "Fill all the fields" });
   }
   try {
-    const userExist = await User.findOne({ email: email });
+    const userExist = await User.findOne({ email: email }).select();
+
     if (!userExist) {
       return res.status(400).json({ error: "Invalid Credentials" });
     }
+
     const isMatch = await bcrypt.compare(password, userExist.password);
     const Token = await userExist.generateAuthToken();
+
     res.cookie("jwtoken", Token, {
       expires: new Date(Date.now() + 25892000000),
       httpOnly: true,
@@ -61,10 +64,13 @@ router.post("/login", async (req, res) => {
       sameSite: "none", // Set SameSite attribute for cross-origin requests
       path: "/",
     });
+
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid Credentials" });
     }
-    return res.status(200).json(userExist);
+
+    const safeUser = await User.findOne({ email }).select("-password -tokens");
+    return res.status(200).json(safeUser);
   } catch (error) {
     console.log("/login " + error);
     res.status(503).json({ error: "Internal Server Error" });
@@ -229,7 +235,7 @@ router.get("/user", authenticate, (req: any, res) => {
   res.status(200).send(req.rootUser);
 });
 
-router.get("/logout", (req, res) => {
+router.get("/api/logout", (req, res) => {
   res.clearCookie("jwtoken", { path: "/" });
   res.status(200).json({ message: "User Logout" });
 });

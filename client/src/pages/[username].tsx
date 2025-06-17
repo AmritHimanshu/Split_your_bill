@@ -1,36 +1,18 @@
-import { useRouter } from "next/router";
-import Sidebar from "./components/Sidebar";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useAppSelector } from "@/store/store";
+import { LOGIN } from "@/utils/Paths/paths"; 
+import Sidebar from "./components/Sidebar";
 
 export default function Home() {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const userState = useAppSelector((state) => state.user.userState);
 
   const router = useRouter();
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-        
-        if(res.status === 401) router.push('/login');
-        const data = await res.json();
-        if (data) {
-          // console.log(data);
-        }
-      } catch (error) {
-        console.log(error);
-        router.push('/login');
-      }
-    };
-
-    getData();
-  }, [router,BASE_URL]);
+    if (!userState) router.push(LOGIN);
+  }, []);
 
   return (
     <div className="flex h-[100vh] bg-green-100 bg-opacity-25">

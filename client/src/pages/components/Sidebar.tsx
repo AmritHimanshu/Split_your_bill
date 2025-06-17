@@ -22,24 +22,24 @@ function Sidebar() {
   const [isFetcing, setIsFetching] = useState(false);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+    // const getData = async () => {
+    //   try {
+    //     const res = await fetch(`${BASE_URL}/user`, {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       credentials: "include",
+    //     });
 
-        const data = await res.json();
-        if (data) {
-          setUser(data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    //     const data = await res.json();
+    //     if (data) {
+    //       setUser(data);
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
 
     const getBills = async () => {
       setIsFetching(true);
@@ -69,7 +69,7 @@ function Sidebar() {
       }
     };
 
-    getData();
+    // getData();
     getBills();
   }, [router, BASE_URL]);
 
