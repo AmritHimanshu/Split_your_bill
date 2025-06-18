@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Image from "next/image";
+import { GET_BILLS } from "@/utils/Apis/api";
+import { LOGIN } from "@/utils/Paths/paths";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Message from "./Message";
 
 function Sidebar() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -20,12 +22,13 @@ function Sidebar() {
   const [delId, setDelId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isFetcing, setIsFetching] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   useEffect(() => {
     const getBills = async () => {
       setIsFetching(true);
       try {
-        const res = await fetch(`${BASE_URL}/getbills`, {
+        const res = await fetch(`${BASE_URL}/${GET_BILLS}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -33,25 +36,28 @@ function Sidebar() {
           credentials: "include",
         });
 
-        if (res.status === 401) router.push("/login");
-        const data = await res.json();
-        if (res.status === 503) {
-          setIsFetching(false);
-          return window.alert(`${data.error}`);
+        if (res.status === 401) {
+          console.log(res.status);
+          // router.push(LOGIN);
         }
+        const data = await res.json();
+
+        if (res.status === 503) {
+          const error = new Error(data.error);
+          throw error;
+        }
+
         if (res.status === 200) {
           setBills(data);
           setIsFetching(false);
         }
-      } catch (error) {
-        console.log(error);
-        setIsFetching(false);
-        window.alert("Internal server error");
-      }
+      } catch (error) {}
+
+      setIsFetching(false);
     };
 
     getBills();
-  }, [router, BASE_URL]);
+  }, []);
 
   const handleBillOnDelete = async (id: String) => {
     setDelId(`${id}`);
@@ -86,11 +92,14 @@ function Sidebar() {
 
   return (
     <>
-      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px]">
+      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px] relative bg-gray-100 border-r-2">
+        {message.text && message.type && (
+          <Message text={message.text} type={message.type} />
+        )}
         <div className="">
           <div>
             <Link href={`/${username}/create-new-bill`}>
-              <div className="w-[100%] h-[50px] text-black p-[5px] my-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] border-black duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">
+              <div className="w-[100%] h-[50px] text-white bg-[rgb(0,144,72)] p-[5px] my-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md duration-200 hover:text-white hover:border-green-600">
                 + Create New
               </div>
             </Link>
@@ -130,8 +139,9 @@ function Sidebar() {
                     >
                       <div
                         className={`text-center px-5 py-[10px] text-[14px] rounded-md hover:bg-neutral-500 hover:bg-opacity-10 ${
-                          bill.title === billname ?
-                          "font-bold text-[16px] bg-neutral-500 bg-opacity-10" : "font-[500]"
+                          bill.title === billname
+                            ? "font-bold text-[16px] bg-neutral-500 bg-opacity-10"
+                            : "font-[500]"
                         } flex items-center justify-between cursor-pointer`}
                       >
                         <div className="">{bill.title}</div>

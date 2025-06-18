@@ -202,7 +202,7 @@ router.delete("/delete/:id", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/getBills", authenticate, async (req: any, res) => {
+router.get("/api/getBills", authenticate, async (req: any, res) => {
   try {
     const bills = await Bill.find({ createdBy: req.userID })
       .select("-members")
