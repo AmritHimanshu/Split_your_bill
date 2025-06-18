@@ -135,14 +135,15 @@ function Register() {
         throw error;
       }
       
-      setIsLoading(false);
-      window.alert(`${data.message}`);
+      setMessage({ text: data.message, type: "success" });
       router.push(LOGIN);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-      window.alert(error);
-    }
+    } catch (error) {}
+
+    setIsLoading(false);
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
   };
 
   return (
@@ -157,7 +158,7 @@ function Register() {
         </div>
         <div>
           <form onSubmit={registerUser}>
-            <div className="my-[10px] pb-2 space-y-2 border-b-2">
+            <div className="my-[10px] pb-2 space-y-2">
               <label
                 htmlFor="name"
                 className="text-[14px] md:text-[18px] text-black"
@@ -170,11 +171,14 @@ function Register() {
                 id="name"
                 value={inputData.name}
                 placeholder="Enter your name"
-                className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
+                className="py-2 outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px] border-b-2"
                 onChange={(e) => handleOnChange(e)}
               />
+              {nameError && (
+                <p className="text-red-600 text-sm">{nameError}</p>
+              )}
             </div>
-            <div className="my-[10px] pb-2 space-y-2 border-b-2">
+            <div className="my-[10px] pb-2 space-y-2 ">
               <label
                 htmlFor="email"
                 className="text-[14px] md:text-[18px] text-black"
@@ -187,11 +191,14 @@ function Register() {
                 id="email"
                 value={inputData.email}
                 placeholder="Enter your email"
-                className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
+                className="py-2 outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px] border-b-2"
                 onChange={(e) => handleOnChange(e)}
               />
+              {emailError && (
+                <p className="text-red-600 text-sm">{emailError}</p>
+              )}
             </div>
-            <div className="my-[10px] pb-2 space-y-2 border-b-2">
+            <div className="my-[10px] pb-2 space-y-2">
               <label
                 htmlFor="phone"
                 className="text-[14px] md:text-[18px] text-black"
@@ -204,11 +211,14 @@ function Register() {
                 id="phone"
                 value={inputData.phone}
                 placeholder="Enter your phone number"
-                className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
+                className="py-2 outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px] border-b-2"
                 onChange={(e) => handleOnChange(e)}
               />
+              {phoneError && (
+                <p className="text-red-600 text-sm">{phoneError}</p>
+              )}
             </div>
-            <div className="my-[10px] pb-2 space-y-2 border-b-2">
+            <div className="my-[10px] pb-2 space-y-2">
               <label
                 htmlFor="password"
                 className="text-[14px] md:text-[18px] text-black"
@@ -222,7 +232,7 @@ function Register() {
                   id="password"
                   value={inputData.password}
                   placeholder="Enter your password"
-                  className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
+                  className="py-2 outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px] border-b-2"
                   onChange={(e) => handleOnChange(e)}
                 />
                 {visible ? (
@@ -237,8 +247,11 @@ function Register() {
                   />
                 )}
               </div>
+              {passwordError && (
+                <p className="text-red-600 text-sm">{passwordError}</p>
+              )}
             </div>
-            <div className="my-[10px] pb-2 space-y-2 border-b-2">
+            <div className="my-[10px] pb-2 space-y-2">
               <label
                 htmlFor="cpassword"
                 className="text-[14px] md:text-[18px] text-black"
@@ -252,7 +265,7 @@ function Register() {
                   id="cpassword"
                   value={inputData.cpassword}
                   placeholder="Re-enter your password"
-                  className="outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px]"
+                  className="py-2 outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px] border-b-2"
                   onChange={(e) => handleOnChange(e)}
                 />
                 {cvisible ? (
@@ -267,6 +280,9 @@ function Register() {
                   />
                 )}
               </div>
+              {cpasswordError && (
+                <p className="text-red-600 text-sm">{cpasswordError}</p>
+              )}
             </div>
 
             <button className="p-[8px] md:p-[10px] mt-[25px] w-[100%] text-center bg-[rgb(0,144,72)] text-white font-bold border-2 rounded-md pointer">
