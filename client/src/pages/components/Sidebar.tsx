@@ -159,7 +159,7 @@ function Sidebar() {
           </div>
         </div>
 
-        <Link href="/login">
+        <Link href={`${LOGIN}`}>
           <div className="flex items-center cursor-pointer" title="Log out">
             <AccountCircleIcon />
             <div className="text-[16px] font-bold text-black mx-[10px]">
