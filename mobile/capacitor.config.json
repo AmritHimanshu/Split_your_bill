@@ -1,0 +1,9 @@
+{
+  "appId": "com.splityourbill.app",
+  "appName": "Split Your Bill",
+  "webDir": "www",
+  "server": {
+    "url": "http://localhost:3000",
+    "cleartext": true
+  }
+}
