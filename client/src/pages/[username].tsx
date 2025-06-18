@@ -7,11 +7,12 @@ import Sidebar from "./components/Sidebar";
 export default function Home() {
 
   const userState = useAppSelector((state) => state.user.userState);
+  console.log(userState)
 
   const router = useRouter();
 
   useEffect(() => {
-    if (!userState) router.push(LOGIN);
+    // if (!userState) router.push(LOGIN);
   }, []);
 
   return (

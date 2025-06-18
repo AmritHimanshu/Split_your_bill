@@ -15,6 +15,8 @@ function Login() {
 
   const userState = useAppSelector((state) => state.user.userState);
 
+  console.log(userState)
+
   const router = useRouter();
   const dispatch = useAppDispatch();
 
