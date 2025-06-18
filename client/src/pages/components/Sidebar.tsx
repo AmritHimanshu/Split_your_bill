@@ -94,7 +94,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px] relative bg-gray-100 border-r-2">
+      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[350px] relative bg-gray-100 border-r-2">
         {message.text && message.type && (
           <Message text={message.text} type={message.type} />
         )}
