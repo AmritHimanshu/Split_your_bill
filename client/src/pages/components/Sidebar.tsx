@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { GET_BILLS } from "@/utils/Apis/api";
+import { useAppSelector } from "@/store/store";
 import { LOGIN } from "@/utils/Paths/paths";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
@@ -12,6 +13,8 @@ import Message from "./Message";
 
 function Sidebar() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const userState = useAppSelector((state) => state.user.userState);
 
   const router = useRouter();
   const { username, billname } = router.query;
@@ -37,8 +40,7 @@ function Sidebar() {
         });
 
         if (res.status === 401) {
-          console.log(res.status);
-          // router.push(LOGIN);
+          router.push(LOGIN);
         }
         const data = await res.json();
 
@@ -161,7 +163,7 @@ function Sidebar() {
           <div className="flex items-center cursor-pointer" title="Log out">
             <AccountCircleIcon />
             <div className="text-[16px] font-bold text-black mx-[10px]">
-              Log Out ({user.name})
+              Log Out ({userState?.name})
             </div>
           </div>
         </Link>
