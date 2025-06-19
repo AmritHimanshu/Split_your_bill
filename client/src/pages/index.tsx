@@ -11,6 +11,7 @@ export default function Home() {
 
   useEffect(() => {
       if (!userState) router.push(LOGIN);
+      else router.push(`/${userState.name}`);
     }, []);
 
   return <div className="flex h-[100vh]"></div>;
