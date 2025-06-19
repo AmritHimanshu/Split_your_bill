@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useAppSelector } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { setUserState } from "@/store/features/userSlice";
 import { LOGOUT, REGISTER } from "@/utils/Apis/api";
 import { LOGIN } from "@/utils/Paths/paths";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -15,6 +16,7 @@ function Register() {
   const userState = useAppSelector((state) => state.user.userState);
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const logOut = async () => {
@@ -26,6 +28,8 @@ function Register() {
           },
           credentials: "include",
         });
+
+        dispatch(setUserState(null));
       } catch (error) {
         console.log(error);
       }
@@ -134,7 +138,7 @@ function Register() {
         const error = new Error(data.error);
         throw error;
       }
-      
+
       setMessage({ text: data.message, type: "success" });
       router.push(LOGIN);
     } catch (error) {}
@@ -174,9 +178,7 @@ function Register() {
                 className="py-2 outline-0 w-full text-[14px] md:text-[18px] placeholder:text-[14px] border-b-2"
                 onChange={(e) => handleOnChange(e)}
               />
-              {nameError && (
-                <p className="text-red-600 text-sm">{nameError}</p>
-              )}
+              {nameError && <p className="text-red-600 text-sm">{nameError}</p>}
             </div>
             <div className="my-[10px] pb-2 space-y-2 ">
               <label

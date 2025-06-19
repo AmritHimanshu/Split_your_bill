@@ -15,8 +15,6 @@ function Login() {
 
   const userState = useAppSelector((state) => state.user.userState);
 
-  console.log(userState)
-
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -39,13 +37,15 @@ function Login() {
           },
           credentials: "include",
         });
+
+        dispatch(setUserState(null));
       } catch (error) {
         console.log(error);
       }
     };
 
     if(userState) logOut();
-  }, [BASE_URL]);
+  }, []);
 
   const loginUser = async (e: any) => {
     e.preventDefault();

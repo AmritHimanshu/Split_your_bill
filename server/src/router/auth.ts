@@ -60,8 +60,10 @@ router.post("/api/login", async (req, res) => {
     res.cookie("jwtoken", Token, {
       expires: new Date(Date.now() + 25892000000),
       httpOnly: true,
-      secure: true, // Mark as secure if using HTTPS
-      sameSite: "none", // Set SameSite attribute for cross-origin requests
+      // secure: true, // Mark as secure if using HTTPS
+      // sameSite: "none", // Set SameSite attribute for cross-origin requests
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
     });
 

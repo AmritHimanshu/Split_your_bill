@@ -113,7 +113,7 @@ function BillPage() {
                       idx !== index && (
                         <>
                           <div
-                            key={idx}
+                            key={idx+index}
                             className="flex items-center justify-between my-4 text-sm"
                           >
                             <div>{mbr?.name}</div>
