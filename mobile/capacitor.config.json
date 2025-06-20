@@ -1,0 +1,9 @@
+{
+  "appId": "com.splityourbill.app",
+  "appName": "Split your Bill",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.4.52:3000",
+    "cleartext": true
+  }
+}
