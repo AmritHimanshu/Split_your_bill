@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LOGIN } from "@/utils/Paths/paths";
+import { GET_SINGLE_BILL } from "@/utils/Apis/api";
 import Sidebar from "../../components/Sidebar";
+import Message from "@/pages/components/Message";
 
 function BillPage() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -10,53 +13,52 @@ function BillPage() {
   const { username, billname, id } = router.query;
 
   const [billData, setBillData] = useState<any>();
+  const [message, setMessage] = useState({ text: "", type: "" });
+
+  const getSingleBill = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/${id}/${GET_SINGLE_BILL}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        router.push(LOGIN);
+      }
+
+      const data = await res.json();
+
+      if (res.status !== 200) {
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
+      }
+
+      setBillData(data);
+    } catch (error) {}
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (res.status === 401) router.push("/login");
-      } catch (error) {
-        console.log(error);
-        router.push("/login");
-      }
-    };
-
-    const getSingleBill = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/${id}/getsinglebill`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-        if (res.status === 401) router.push("/login");
-        const data = await res.json();
-        if (res.status === 422) return window.alert(`${data.error}`);
-        setBillData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     {
       id && getSingleBill();
     }
-    getData();
-  }, [router, id, BASE_URL]);
+  }, [id]);
 
   return (
     <div className="flex h-[100vh] bg-green-100 bg-opacity-25">
       <Sidebar />
-      <div className="w-[100%] lg:w-[75% py-[20px] flex">
+      <div className="w-[100%] lg:w-[75% py-[20px] flex relative">
+        {message.text && message.type && (
+          <Message text={message.text} type={message.type} />
+        )}
+
         <div className="py-[10px] md:px-[20px] w-[100%]">
           <div className="px-[10px] py-[5px] flex items-center justify-between">
             <div className="space-y-2">
@@ -113,7 +115,7 @@ function BillPage() {
                       idx !== index && (
                         <>
                           <div
-                            key={idx+index}
+                            key={idx + index}
                             className="flex items-center justify-between my-4 text-sm"
                           >
                             <div>{mbr?.name}</div>

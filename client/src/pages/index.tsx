@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import Sidebar from "./components/Sidebar";
 import { useEffect } from "react";
 import { useAppSelector } from "@/store/store";
 import { LOGIN } from "@/utils/Paths/paths";

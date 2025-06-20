@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { GET_BILLS } from "@/utils/Apis/api";
+import { DELETE_BILL, GET_BILLS } from "@/utils/Apis/api";
 import { useAppSelector } from "@/store/store";
 import { LOGIN } from "@/utils/Paths/paths";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -27,37 +27,40 @@ function Sidebar() {
   const [isFetcing, setIsFetching] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
 
+  const getBills = async () => {
+    setIsFetching(true);
+    try {
+      const res = await fetch(`${BASE_URL}/${GET_BILLS}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        router.push(LOGIN);
+      }
+
+      const data = await res.json();
+
+      if (res.status !== 200) {
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
+      }
+
+      setBills(data);
+    } catch (error) {}
+
+    setIsFetching(false);
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
+  };
+
   useEffect(() => {
-    const getBills = async () => {
-      setIsFetching(true);
-      try {
-        const res = await fetch(`${BASE_URL}/${GET_BILLS}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (res.status === 401) {
-          router.push(LOGIN);
-        }
-        const data = await res.json();
-
-        if (res.status === 503) {
-          const error = new Error(data.error);
-          throw error;
-        }
-
-        if (res.status === 200) {
-          setBills(data);
-          setIsFetching(false);
-        }
-      } catch (error) {}
-
-      setIsFetching(false);
-    };
-
     getBills();
   }, []);
 
@@ -65,7 +68,7 @@ function Sidebar() {
     setDelId(`${id}`);
     setIsLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/delete/${id}`, {
+      const res = await fetch(`${BASE_URL}/${DELETE_BILL}/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -73,23 +76,25 @@ function Sidebar() {
         credentials: "include",
       });
 
-      if (res.status === 401) router.push("/login");
+      if (res.status === 401) router.push(LOGIN);
+
       const data = await res.json();
+
       if (res.status !== 200) {
-        setIsLoading(false);
-        return window.alert(`${data.error}`);
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
       }
-      if (res.status === 200) {
-        setIsLoading(false);
-        window.alert("Successfully deleted");
-        router.push(`/${username}`);
-        // window.location.reload();
-      }
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-      window.alert(error);
-    }
+
+      router.push(`/${username}`);
+      setMessage({ text: data.message, type: "success" });
+    } catch (error) {}
+
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
   };
 
   return (
@@ -98,6 +103,7 @@ function Sidebar() {
         {message.text && message.type && (
           <Message text={message.text} type={message.type} />
         )}
+
         <div className="">
           <div>
             <Link href={`/${username}/create-new-bill`}>
@@ -248,11 +254,11 @@ function Sidebar() {
               </div>
             </div>
 
-            <Link href="/login">
+            <Link href={`${LOGIN}`}>
               <div className="flex items-center cursor-pointer" title="Log out">
                 <AccountCircleIcon />
                 <div className="text-[13px] font-bold text-black mx-[10px]">
-                  Log Out ({user.name})
+                  Log Out ({userState?.name})
                 </div>
               </div>
             </Link>

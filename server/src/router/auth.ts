@@ -104,7 +104,7 @@ router.post("/create-new-bill", authenticate, async (req: any, res) => {
   }
 });
 
-router.put("/addAmount/:id", authenticate, async (req, res) => {
+router.put("/api/add-amount/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const { selectedMember, inputAmount } = req.body;
   try {
@@ -142,7 +142,7 @@ router.put("/addAmount/:id", authenticate, async (req, res) => {
   }
 });
 
-router.put("/subAmount/:id", authenticate, async (req, res) => {
+router.put("/api/sub-amount/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const { selectedMember, inputAmount } = req.body;
   try {
@@ -185,7 +185,7 @@ router.put("/subAmount/:id", authenticate, async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", authenticate, async (req: any, res) => {
+router.delete("/api/delete-bill/:id", authenticate, async (req: any, res) => {
   const { id } = req.params;
   try {
     const bill = await Bill.findById(id);
@@ -193,7 +193,7 @@ router.delete("/delete/:id", authenticate, async (req: any, res) => {
       return res.status(404).json({ error: "Bill not found" });
     }
     if (req.rootUser._id.equals(bill.createdBy)) {
-      await bill.deleteOne(); // Invoke remove() to delete the post
+      await bill.deleteOne();
       res.status(200).json({ message: "Post deleted successfully" });
     } else {
       return res.status(422).json({ error: "You can't delete this post" });
@@ -204,7 +204,7 @@ router.delete("/delete/:id", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/api/getBills", authenticate, async (req: any, res) => {
+router.get("/api/get-bills", authenticate, async (req: any, res) => {
   try {
     const bills = await Bill.find({ createdBy: req.userID })
       .select("-members")
@@ -216,8 +216,9 @@ router.get("/api/getBills", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/:id/getsinglebill", authenticate, async (req: any, res) => {
+router.get("/:id/api/get-single-bill", authenticate, async (req: any, res) => {
   const id = req.params.id;
+
   if (!ObjectId.isValid(id)) {
     return res.status(400).send({ error: "Invalid ID format" });
   }
@@ -233,9 +234,9 @@ router.get("/:id/getsinglebill", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/user", authenticate, (req: any, res) => {
-  res.status(200).send(req.rootUser);
-});
+// router.get("/user", authenticate, (req: any, res) => {
+//   res.status(200).send(req.rootUser);
+// });
 
 router.get("/api/logout", (req, res) => {
   res.clearCookie("jwtoken", { path: "/" });
