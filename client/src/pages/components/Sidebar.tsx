@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Image from "next/image";
+import { DELETE_BILL, GET_BILLS } from "@/utils/Apis/api";
+import { useAppSelector } from "@/store/store";
+import { LOGIN } from "@/utils/Paths/paths";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Message from "./Message";
 
 function Sidebar() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const userState = useAppSelector((state) => state.user.userState);
 
   const router = useRouter();
   const { username, billname } = router.query;
@@ -20,64 +25,50 @@ function Sidebar() {
   const [delId, setDelId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isFetcing, setIsFetching] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
+
+  const getBills = async () => {
+    setIsFetching(true);
+    try {
+      const res = await fetch(`${BASE_URL}/${GET_BILLS}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        router.push(LOGIN);
+      }
+
+      const data = await res.json();
+
+      if (res.status !== 200) {
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
+      }
+
+      setBills(data);
+    } catch (error) {}
+
+    setIsFetching(false);
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        const data = await res.json();
-        if (data) {
-          setUser(data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getBills = async () => {
-      setIsFetching(true);
-      try {
-        const res = await fetch(`${BASE_URL}/getbills`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (res.status === 401) router.push("/login");
-        const data = await res.json();
-        if (res.status === 503) {
-          setIsFetching(false);
-          return window.alert(`${data.error}`);
-        }
-        if (res.status === 200) {
-          setBills(data);
-          setIsFetching(false);
-        }
-      } catch (error) {
-        console.log(error);
-        setIsFetching(false);
-        window.alert("Internal server error");
-      }
-    };
-
-    getData();
     getBills();
-  }, [router, BASE_URL]);
+  }, []);
 
   const handleBillOnDelete = async (id: String) => {
     setDelId(`${id}`);
     setIsLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/delete/${id}`, {
+      const res = await fetch(`${BASE_URL}/${DELETE_BILL}/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -85,32 +76,38 @@ function Sidebar() {
         credentials: "include",
       });
 
-      if (res.status === 401) router.push("/login");
+      if (res.status === 401) router.push(LOGIN);
+
       const data = await res.json();
+
       if (res.status !== 200) {
-        setIsLoading(false);
-        return window.alert(`${data.error}`);
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
       }
-      if (res.status === 200) {
-        setIsLoading(false);
-        window.alert("Successfully deleted");
-        router.push(`/${username}`);
-        // window.location.reload();
-      }
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-      window.alert(error);
-    }
+
+      router.push(`/${username}`);
+      setMessage({ text: data.message, type: "success" });
+    } catch (error) {}
+
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
   };
 
   return (
     <>
-      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[300px]">
+      <div className="hidden lg:flex flex-col justify-between p-[15px] w-[350px] relative bg-gray-100 border-r-2">
+        {message.text && message.type && (
+          <Message text={message.text} type={message.type} />
+        )}
+
         <div className="">
           <div>
             <Link href={`/${username}/create-new-bill`}>
-              <div className="w-[100%] h-[50px] text-black p-[5px] my-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md border-[1px] border-black duration-200 hover:text-[rgb(0,144,72)] hover:border-green-600">
+              <div className="w-[100%] h-[50px] text-white bg-[rgb(0,144,72)] p-[5px] my-[20px] text-[20px] font-bold cursor-pointer flex items-center justify-center rounded-md duration-200 hover:text-white hover:border-green-600">
                 + Create New
               </div>
             </Link>
@@ -150,8 +147,9 @@ function Sidebar() {
                     >
                       <div
                         className={`text-center px-5 py-[10px] text-[14px] rounded-md hover:bg-neutral-500 hover:bg-opacity-10 ${
-                          bill.title === billname ?
-                          "font-bold text-[16px] bg-neutral-500 bg-opacity-10" : "font-[500]"
+                          bill.title === billname
+                            ? "font-bold text-[16px] bg-neutral-500 bg-opacity-10"
+                            : "font-[500]"
                         } flex items-center justify-between cursor-pointer`}
                       >
                         <div className="">{bill.title}</div>
@@ -167,11 +165,11 @@ function Sidebar() {
           </div>
         </div>
 
-        <Link href="/login">
+        <Link href={`${LOGIN}`}>
           <div className="flex items-center cursor-pointer" title="Log out">
             <AccountCircleIcon />
             <div className="text-[16px] font-bold text-black mx-[10px]">
-              Log Out ({user.name})
+              Log Out ({userState?.name})
             </div>
           </div>
         </Link>
@@ -256,11 +254,11 @@ function Sidebar() {
               </div>
             </div>
 
-            <Link href="/login">
+            <Link href={`${LOGIN}`}>
               <div className="flex items-center cursor-pointer" title="Log out">
                 <AccountCircleIcon />
                 <div className="text-[13px] font-bold text-black mx-[10px]">
-                  Log Out ({user.name})
+                  Log Out ({userState?.name})
                 </div>
               </div>
             </Link>

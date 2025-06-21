@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LOGIN } from "@/utils/Paths/paths";
+import { GET_SINGLE_BILL, SUBTRACT_AMOUNT } from "@/utils/Apis/api";
 import CloseIcon from "@mui/icons-material/Close";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import Message from "@/pages/components/Message";
 
 function Subtractexpenses() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -14,61 +17,74 @@ function Subtractexpenses() {
   const [inputAmount, setInputAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [billData, setBillData] = useState<any>();
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const [selectedMemberError, setSelectedMemberError] = useState("");
+  const [inputAmountError, setInputAmountError] = useState("");
+
+  const getSingleBill = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/${id}/${GET_SINGLE_BILL}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        router.push(LOGIN);
+      }
+
+      const data = await res.json();
+
+      if (res.status !== 200) {
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
+      }
+
+      setBillData(data);
+    } catch (error) {}
+
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (res.status === 401) router.push("/login");
-      } catch (error) {
-        console.log(error);
-        router.push("/login");
-      }
-    };
-
-    const getSingleBill = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/${id}/getsinglebill`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-        if (res.status === 401) router.push("/login");
-        const data = await res.json();
-        if (res.status === 422) return window.alert(`${data.error}`);
-        setBillData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     {
       id && getSingleBill();
     }
-    getData();
-  }, [router, id, BASE_URL]);
+  }, [id]);
 
   const subAmount = async () => {
-    if (!selectedMember || !inputAmount) {
-      return window.alert("Fill all the fields");
+    setSelectedMemberError("");
+    setInputAmountError("");
+    setMessage({ text: "", type: "" });
+
+    let hasError = false;
+
+    if (!selectedMember) {
+      setSelectedMemberError("Member is required.");
+      hasError = true;
     }
+
+    if (!inputAmount) {
+      setInputAmountError("Amount is required.");
+      hasError = true;
+    }
+
     if (!/^\d*$/.test(inputAmount)) {
       setInputAmount("");
-      return window.alert("Enter the number");
+      setInputAmountError("Enter the number.");
+      hasError = true;
     }
+
+    if (hasError) return;
 
     setIsLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/subAmount/${id}`, {
+      const res = await fetch(`${BASE_URL}/${SUBTRACT_AMOUNT}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -81,28 +97,34 @@ function Subtractexpenses() {
       });
 
       if (res.status === 401) {
-        setIsLoading(false);
-        router.push("/login");
+        router.push(LOGIN);
       }
+
       const data = await res.json();
+
       if (res.status !== 200) {
-        setIsLoading(false);
-        return window.alert(`${data.error}`);
-      } else {
-        setBillData(data);
-        setInputAmount("");
-        setIsLoading(false);
-        router.push(`/${username}/${billname}/${id}`);
+        setMessage({ text: data.error, type: "error" });
+        const error = new Error(data.error);
+        throw error;
       }
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-      window.alert(error);
-    }
+
+      setBillData(data);
+      setInputAmount("");
+      router.push(`/${username}/${billname}/${id}`);
+    } catch (error) {}
+
+    setIsLoading(false);
+    setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 2000);
   };
 
   return (
-    <div className="bg-green-100 bg-opacity-25 h-screen flex items-center justify-center">
+    <div className="bg-green-100 bg-opacity-25 h-screen flex items-center justify-center relative">
+      {message.text && message.type && (
+        <Message text={message.text} type={message.type} />
+      )}
+
       <div className="min-w-[400px] md:w-[500px] bg-white p-[15px] md:p-[20px] shadow-xl rounded-md">
         <div className="flex items-center justify-between p-[2px]">
           <div className="text-[15px] md:text-[19px] font-bold">
@@ -138,6 +160,9 @@ function Subtractexpenses() {
                 </option>
               ))}
             </select>
+            {selectedMemberError && (
+              <p className="text-red-600 text-sm">{selectedMemberError}</p>
+            )}
           </div>
 
           <div className="pt-[20px]">
@@ -151,6 +176,9 @@ function Subtractexpenses() {
               onChange={(e) => setInputAmount(e.target.value)}
             />
             <hr className="border-[1px] border-[rgb(116,116,116)]" />
+            {inputAmountError && (
+              <p className="text-red-600 text-sm">{inputAmountError}</p>
+            )}
           </div>
 
           <button

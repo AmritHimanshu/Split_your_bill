@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useAppSelector } from "@/store/store";
+import { LOGIN } from "@/utils/Paths/paths";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Sidebar from "../components/Sidebar";
@@ -8,7 +10,10 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 function AddNewBill() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+  const userState = useAppSelector((state) => state.user.userState);
+
   const router = useRouter();
+
   const { username } = router.query;
 
   const [title, setTitle] = useState("");
@@ -16,31 +21,14 @@ function AddNewBill() {
     { memberName: "" },
     { memberName: "" },
   ]);
+
+  const [titleError, setTitleError] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (res.status === 401) {
-          router.push("/login");
-        }
-        const data = await res.json();
-      } catch (error) {
-        console.log(error);
-        router.push("/login");
-      }
-    };
-
-    getData();
-  }, [router, BASE_URL]);
+    if (!userState) router.push(LOGIN);
+  }, []);
 
   const handleDeleteInput = (index: number) => {
     const newArray = [...noOfInputs];
@@ -66,7 +54,9 @@ function AddNewBill() {
 
   const handleOnCreate = async (e: any) => {
     e.preventDefault();
+
     if (title === "") return window.alert("Enter the Title");
+
     noOfInputs.map((item, index) => {
       if (item.memberName === "")
         return window.alert(`Member ${index + 1} is empty`);

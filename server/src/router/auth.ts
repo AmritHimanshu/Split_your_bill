@@ -10,7 +10,7 @@ const { ObjectId } = mongoose.Types;
 const User = require("../model/userSchema");
 const Bill = require("../model/billSchema");
 
-router.post("/register", async (req, res) => {
+router.post("/api/register", async (req, res) => {
   const { name, email, phone, password, cpassword } = req.body;
   const regex = /^[0-9]+$/;
   if (!name || !email || !phone || !password || !cpassword) {
@@ -42,29 +42,37 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(206).json({ error: "Fill all the fields" });
   }
   try {
-    const userExist = await User.findOne({ email: email });
+    const userExist = await User.findOne({ email: email }).select();
+
     if (!userExist) {
       return res.status(400).json({ error: "Invalid Credentials" });
     }
+
     const isMatch = await bcrypt.compare(password, userExist.password);
     const Token = await userExist.generateAuthToken();
+
     res.cookie("jwtoken", Token, {
       expires: new Date(Date.now() + 25892000000),
       httpOnly: true,
-      secure: true, // Mark as secure if using HTTPS
-      sameSite: "none", // Set SameSite attribute for cross-origin requests
+      // secure: true, // Mark as secure if using HTTPS
+      // sameSite: "none", // Set SameSite attribute for cross-origin requests
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
     });
+
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid Credentials" });
     }
-    return res.status(200).json(userExist);
+
+    const safeUser = await User.findOne({ email }).select("-password -tokens");
+    return res.status(200).json(safeUser);
   } catch (error) {
     console.log("/login " + error);
     res.status(503).json({ error: "Internal Server Error" });
@@ -96,7 +104,7 @@ router.post("/create-new-bill", authenticate, async (req: any, res) => {
   }
 });
 
-router.put("/addAmount/:id", authenticate, async (req, res) => {
+router.put("/api/add-amount/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const { selectedMember, inputAmount } = req.body;
   try {
@@ -134,7 +142,7 @@ router.put("/addAmount/:id", authenticate, async (req, res) => {
   }
 });
 
-router.put("/subAmount/:id", authenticate, async (req, res) => {
+router.put("/api/sub-amount/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const { selectedMember, inputAmount } = req.body;
   try {
@@ -177,7 +185,7 @@ router.put("/subAmount/:id", authenticate, async (req, res) => {
   }
 });
 
-router.delete("/delete/:id", authenticate, async (req: any, res) => {
+router.delete("/api/delete-bill/:id", authenticate, async (req: any, res) => {
   const { id } = req.params;
   try {
     const bill = await Bill.findById(id);
@@ -185,7 +193,7 @@ router.delete("/delete/:id", authenticate, async (req: any, res) => {
       return res.status(404).json({ error: "Bill not found" });
     }
     if (req.rootUser._id.equals(bill.createdBy)) {
-      await bill.deleteOne(); // Invoke remove() to delete the post
+      await bill.deleteOne();
       res.status(200).json({ message: "Post deleted successfully" });
     } else {
       return res.status(422).json({ error: "You can't delete this post" });
@@ -196,7 +204,7 @@ router.delete("/delete/:id", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/getBills", authenticate, async (req: any, res) => {
+router.get("/api/get-bills", authenticate, async (req: any, res) => {
   try {
     const bills = await Bill.find({ createdBy: req.userID })
       .select("-members")
@@ -208,8 +216,9 @@ router.get("/getBills", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/:id/getsinglebill", authenticate, async (req: any, res) => {
+router.get("/:id/api/get-single-bill", authenticate, async (req: any, res) => {
   const id = req.params.id;
+
   if (!ObjectId.isValid(id)) {
     return res.status(400).send({ error: "Invalid ID format" });
   }
@@ -225,11 +234,11 @@ router.get("/:id/getsinglebill", authenticate, async (req: any, res) => {
   }
 });
 
-router.get("/user", authenticate, (req: any, res) => {
-  res.status(200).send(req.rootUser);
-});
+// router.get("/user", authenticate, (req: any, res) => {
+//   res.status(200).send(req.rootUser);
+// });
 
-router.get("/logout", (req, res) => {
+router.get("/api/logout", (req, res) => {
   res.clearCookie("jwtoken", { path: "/" });
   res.status(200).json({ message: "User Logout" });
 });
