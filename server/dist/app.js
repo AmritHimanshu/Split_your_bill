@@ -16,6 +16,7 @@ app.use(cors({
     credentials: true,
 }));
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use(require("./router/auth"));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

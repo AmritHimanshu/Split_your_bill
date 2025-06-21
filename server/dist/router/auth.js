@@ -22,7 +22,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 const User = require("../model/userSchema");
 const Bill = require("../model/billSchema");
-router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/api/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, phone, password, cpassword } = req.body;
     const regex = /^[0-9]+$/;
     if (!name || !email || !phone || !password || !cpassword) {
@@ -58,13 +58,13 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(206).json({ error: "Fill all the fields" });
     }
     try {
-        const userExist = yield User.findOne({ email: email });
+        const userExist = yield User.findOne({ email: email }).select();
         if (!userExist) {
             return res.status(400).json({ error: "Invalid Credentials" });
         }
@@ -73,14 +73,17 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.cookie("jwtoken", Token, {
             expires: new Date(Date.now() + 25892000000),
             httpOnly: true,
-            secure: true, // Mark as secure if using HTTPS
-            sameSite: "none", // Set SameSite attribute for cross-origin requests
+            // secure: true, // Mark as secure if using HTTPS
+            // sameSite: "none", // Set SameSite attribute for cross-origin requests
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             path: "/",
         });
         if (!isMatch) {
             return res.status(400).json({ error: "Invalid Credentials" });
         }
-        return res.status(200).json(userExist);
+        const safeUser = yield User.findOne({ email }).select("-password -tokens");
+        return res.status(200).json(safeUser);
     }
     catch (error) {
         console.log("/login " + error);
@@ -111,7 +114,7 @@ router.post("/create-new-bill", authenticate, (req, res) => __awaiter(void 0, vo
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.put("/addAmount/:id", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/api/add-amount/:id", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { selectedMember, inputAmount } = req.body;
     try {
@@ -142,7 +145,7 @@ router.put("/addAmount/:id", authenticate, (req, res) => __awaiter(void 0, void 
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.put("/subAmount/:id", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/api/sub-amount/:id", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { selectedMember, inputAmount } = req.body;
     try {
@@ -178,7 +181,7 @@ router.put("/subAmount/:id", authenticate, (req, res) => __awaiter(void 0, void 
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.delete("/delete/:id", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/api/delete-bill/:id", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
         const bill = yield Bill.findById(id);
@@ -186,7 +189,7 @@ router.delete("/delete/:id", authenticate, (req, res) => __awaiter(void 0, void 
             return res.status(404).json({ error: "Bill not found" });
         }
         if (req.rootUser._id.equals(bill.createdBy)) {
-            yield bill.deleteOne(); // Invoke remove() to delete the post
+            yield bill.deleteOne();
             res.status(200).json({ message: "Post deleted successfully" });
         }
         else {
@@ -198,7 +201,7 @@ router.delete("/delete/:id", authenticate, (req, res) => __awaiter(void 0, void 
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.get("/getBills", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/api/get-bills", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const bills = yield Bill.find({ createdBy: req.userID })
             .select("-members")
@@ -210,7 +213,7 @@ router.get("/getBills", authenticate, (req, res) => __awaiter(void 0, void 0, vo
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.get("/:id/getsinglebill", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/:id/api/get-single-bill", authenticate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     if (!ObjectId.isValid(id)) {
         return res.status(400).send({ error: "Invalid ID format" });
@@ -227,10 +230,10 @@ router.get("/:id/getsinglebill", authenticate, (req, res) => __awaiter(void 0, v
         res.status(503).json({ error: "Internal Server Error" });
     }
 }));
-router.get("/user", authenticate, (req, res) => {
-    res.status(200).send(req.rootUser);
-});
-router.get("/logout", (req, res) => {
+// router.get("/user", authenticate, (req: any, res) => {
+//   res.status(200).send(req.rootUser);
+// });
+router.get("/api/logout", (req, res) => {
     res.clearCookie("jwtoken", { path: "/" });
     res.status(200).json({ message: "User Logout" });
 });
