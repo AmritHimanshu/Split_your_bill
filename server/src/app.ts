@@ -11,8 +11,8 @@ require("./db/conn");
 
 app.use(
   cors({
-    // origin: true,
-    origin: "https://split-your-bill.vercel.app",
+    origin: true,
+    // origin: "https://split-your-bill.vercel.app",
     credentials: true,
   })
 );

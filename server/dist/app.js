@@ -11,8 +11,8 @@ dotenv.config({ path: "./src/.env" });
 const port = process.env.PORT;
 require("./db/conn");
 app.use(cors({
-    // origin: true,
-    origin: "https://split-your-bill.vercel.app",
+    origin: true,
+    // origin: "https://split-your-bill.vercel.app",
     credentials: true,
 }));
 app.use(express_1.default.json());
